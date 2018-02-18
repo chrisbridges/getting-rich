@@ -9,3 +9,16 @@ header {
 header, section {
   height: 100vh;
 }
+
+legend {
+  text-align: center;
+}
+
+form {
+  margin: 0 auto;
+  width: 80%;
+}
+
+.next-section-button {
+  margin: 0 auto;
+}
