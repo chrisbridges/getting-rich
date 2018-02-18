@@ -8,6 +8,71 @@
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
+  <header>
+    <h1>Am I Getting Rich?</h1>
+    <h2>(or nah...)</h2>
+    <a class="next-section-button" href="#income-section">Let's find out</a>
+  </header>
+
+  <section id="income-section">
+    <form>
+      <legend>Income &amp; Wages</legend>
+      <label></label>
+      <select>
+        <option value="0">Salary / Wages</option>
+        <option value="1">Additional Wages</option>
+        <option value="2">Pension</option>
+        <option value="3">Social Security</option>
+        <option value="4">Other</option>
+      </select>
+      <button>Add additional</button>
+    </form>
+    <a class="next-section-button" href="#investments-section"><button>Next</button></a>
+  </section>
+
+  <section id="investments-section">
+    <form>
+      <legend>Investments &amp; Assets</legend>
+      <label></label>
+      <select>
+        <option value="0">NYSE / NASDAQ Holding</option>
+        <option value="1">Cryptocurrency</option>
+      </select>
+      <button>Add additional</button>
+    </form>
+    <a class="next-section-button" href="#expenses-section"><button>Next</button></a>
+  </section>
+
+  <section id="expenses-section">
+    <form>
+      <legend>Expenses &amp; Debts</legend>
+      <select class="expenses-select">
+        <option value="0">Rent</option>
+        <option value="1">Mortgage</option>
+        <option value="2">Car Payment</option>
+        <option value="3">Student Loans</option>
+        <option value="4">Credit Card Payments</option>
+        <option value="5">Gas</option>
+        <option value="6">Utilities</option>
+        <option value="7">Cell Phone</option>
+        <option value="8">Groceries &amp; Food</option>
+        <option value="9">Miscellaneous</option>
+      </select>
+      <button>Add additional</button>
+    </form>
+    <a class="next-section-button" href="#results-section"><button>Next</button></a>
+  </section>
+
+  <main role="main">
+    <section id="results-section">
+      <div class="income-debts-investments-results">
+      </div>
+      <div class="ticker">
+      </div>
+      <div class="disclaimer">
+      </div>
+    </section>
+  </main>
 
   <script src="app.js"></script>
 </body>
