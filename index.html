@@ -15,7 +15,7 @@
   </header>
 
   <section id="income-section">
-    <form>
+    <form id="income-form">
       <legend>Income &amp; Wages</legend>
       <label></label>
       <select>
@@ -24,11 +24,11 @@
         <option value="2">Pension</option>
         <option value="3">Social Security</option>
         <option value="4">Other</option>
-        <label></label>
-        <input type="number" min="0" step="5000" name="income" placeholder="After-tax income">
+        <label for="income"></label>
+        <input type="number" min="0" step="100" name="income" id="income" placeholder="After-tax income">
       </select>
-      <button>Add additional</button>
     </form>
+    <button class="add-additional">Add additional</button>
     <a class="next-section-button" href="#investments-section">Next</a>
   </section>
 
@@ -80,7 +80,7 @@
       </div>
     </section>
   </main>
-  
+
   <script
     src="http://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
