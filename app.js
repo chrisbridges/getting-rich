@@ -17,17 +17,21 @@ function addAdditionalIncomeInput () {
       </select>
       <button type="submit">Submit</button>`;
 
-  $('.add-additional').on('click', function() {
-    $('#income-form').append(incomeSelect);
-  });
+  $('#income-form').append(incomeSelect);
 }
 
 function storingIncomeValues () {
   $('#income-form').submit(function(event) {
     event.preventDefault();
-    incomes[$('#income-option').val()] = $('#income').val();
+    if (incomes.hasOwnProperty($('#income-option').val())) {
+      incomes[$('#income-option').val()] += parseInt($('#income').val());
+    } else {
+      incomes[$('#income-option').val()] = parseInt($('#income').val());
+    }
     console.log(incomes);
+    $('#income').val('');
   });
 }
 
+$(addAdditionalIncomeInput);
 $(storingIncomeValues);
