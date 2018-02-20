@@ -38,5 +38,13 @@ function displayValues (valueObj, incomeOrExpense) {
   $(`.user-${incomeOrExpense}-values`).html(output);
 }
 
+function storingInvestments () {
+
+}
+
+function storingDebts () {
+
+}
+
 $(listenForUserIncome);
 $(listenForUserExpense);
