@@ -6,15 +6,16 @@ const expenses = {};
 const investments = {};
 
 function addAdditionalIncomeInput () {
-  const incomeSelect = `<br><select>
-        <option value="0">Salary / Wages</option>
-        <option value="1">Additional Wages</option>
-        <option value="2">Pension</option>
-        <option value="3">Social Security</option>
-        <option value="4">Other</option>
+  const incomeSelect = `<br><select id="income-option">
+        <option value="Salary / Wages">Salary / Wages</option>
+        <option value="Additional Wages">Additional Wages</option>
+        <option value="Pension">Pension</option>
+        <option value="Social Security">Social Security</option>
+        <option value="Other">Other</option>
         <label for="income"></label>
-        <input type="number" min="0" step="100" name="income" id="income" placeholder="After-tax income">
-      </select>`;
+        <input type="number" min="0" name="income" id="income" placeholder="After-tax income">
+      </select>
+      <button type="submit">Submit</button>`;
 
   $('.add-additional').on('click', function() {
     $('#income-form').append(incomeSelect);
@@ -22,7 +23,11 @@ function addAdditionalIncomeInput () {
 }
 
 function storingIncomeValues () {
-  
+  $('#income-form').submit(function(event) {
+    event.preventDefault();
+    incomes[$('#income-option').val()] = $('#income').val();
+    console.log(incomes);
+  });
 }
 
-$(addAdditionalIncomeInput);
+$(storingIncomeValues);
