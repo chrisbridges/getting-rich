@@ -29,12 +29,11 @@
       </select>
       <button type="submit">Submit</button>
     </form>
-    <button class="add-additional">Add additional</button>
     <div class="user-income-values"></div>
-    <a class="next-section-button" href="#investments-section">Next</a>
+    <a class="next-section-button" href="#investment-section">Next</a>
   </section>
 
-  <section id="investments-section">
+  <section id="investment-section">
     <form>
       <legend>Investments &amp; Assets</legend>
       <label></label>
@@ -42,18 +41,18 @@
         <option value="0">NYSE / NASDAQ Holding</option>
         <option value="1">Cryptocurrency</option>
       </select>
+      <button type="submit">Submit</button>
       <input type="number" min="0" name="investment-quantity" placeholder="# of shares">
       <span>shares of</span>
       <input type="text" name="investment" placeholder="AAPL, MSFT, VTSAX, etc.">
-      <button>Add additional</button>
     </form>
-    <a class="next-section-button" href="#expenses-section">Next</a>
+    <a class="next-section-button" href="#expense-section">Next</a>
   </section>
 
-  <section id="expenses-section">
+  <section id="expense-section">
     <form>
       <legend>Expenses &amp; Debts</legend>
-      <select class="expenses-select">
+      <select class="expense-option">
         <option value="0">Rent</option>
         <option value="1">Mortgage</option>
         <option value="2">Car Payment</option>
@@ -66,15 +65,15 @@
         <option value="9">Miscellaneous Expense</option>
         <option value="10">Miscellaneous Debt</option>
       </select>
+      <button type="submit">Submit</button>
       <input type="number" min="0" name="debt">
-      <button>Add additional</button>
     </form>
-    <a class="next-section-button" href="#results-section">Next</a>
+    <a class="next-section-button" href="#result-section">Next</a>
   </section>
 
   <main role="main">
-    <section id="results-section">
-      <div class="income-debts-investments-results">
+    <section id="result-section">
+      <div class="income-debt-investment-result">
       </div>
       <div class="ticker">
       </div>

@@ -5,42 +5,36 @@ const incomes = {};
 const expenses = {};
 const investments = {};
 
-function addAdditionalIncomeInput () {
-  const incomeSelect = `<br><select id="income-option">
-        <option value="Salary / Wages">Salary / Wages</option>
-        <option value="Additional Wages">Additional Wages</option>
-        <option value="Pension">Pension</option>
-        <option value="Social Security">Social Security</option>
-        <option value="Other">Other</option>
-        <label for="income"></label>
-        <input type="number" min="0" name="income" id="income" placeholder="After-tax income">
-      </select>
-      <button type="submit">Submit</button>`;
-
-  $('#income-form').append(incomeSelect);
-}
-
-function storingIncomeValues () {
+function listenForUserIncome () {
   $('#income-form').submit(function(event) {
     event.preventDefault();
-    if (incomes.hasOwnProperty($('#income-option').val())) {
-      incomes[$('#income-option').val()] += parseInt($('#income').val());
-    } else {
-      incomes[$('#income-option').val()] = parseInt($('#income').val());
-    }
-    console.log(incomes);
-    $('#income').val('');
-    displayValues(incomes, 'income');
+    storingValues(incomes, 'income');
+  });
+}
+function listenForUserExpense () {
+  $('expense-form').submit(function(event) {
+    event.preventDefault();
+    storingValues(expenses, 'expense');
   });
 }
 
-//on income submit, prepend income values to section and allow user to delete them with click 
-function displayValues (values, incomeOrExpense) {
+function storingValues (valueObj, incomeOrExpense) {
+  if (valueObj.hasOwnProperty($(`#${incomeOrExpense}-option`).val())) {
+    valueObj[$(`#${incomeOrExpense}-option`).val()] += parseInt($(`#${incomeOrExpense}`).val());
+  } else {
+    valueObj[$(`#${incomeOrExpense}-option`).val()] = parseInt($(`#${incomeOrExpense}`).val());
+  }
+  console.log(valueObj);
+  $(`#${incomeOrExpense}`).val('');
+  displayValues(valueObj, incomeOrExpense);
+}
+
+function displayValues (valueObj, incomeOrExpense) {
   let output = '';
-  for (var prop in values) {
-    output += `${prop} - $${values[prop]}<br>`;
+  for (var prop in valueObj) {
+    output += `${prop} - $${valueObj[prop]}<br>`;
   }
   $(`.user-${incomeOrExpense}-values`).html(output);
 }
 
-$(storingIncomeValues);
+$(listenForUserIncome);
