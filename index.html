@@ -25,8 +25,9 @@
         <option value="3">Social Security</option>
         <option value="4">Other</option>
         <label for="income"></label>
-        <input type="number" min="0" step="100" name="income" id="income" placeholder="After-tax income">
+        <input type="number" min="0" name="income" id="income" placeholder="After-tax income">
       </select>
+      <button type="submit">Submit</button>
     </form>
     <button class="add-additional">Add additional</button>
     <a class="next-section-button" href="#investments-section">Next</a>
@@ -40,7 +41,7 @@
         <option value="0">NYSE / NASDAQ Holding</option>
         <option value="1">Cryptocurrency</option>
       </select>
-      <input type="number" min="0" step="50" name="investment-quantity" placeholder="# of shares">
+      <input type="number" min="0" name="investment-quantity" placeholder="# of shares">
       <span>shares of</span>
       <input type="text" name="investment" placeholder="AAPL, MSFT, VTSAX, etc.">
       <button>Add additional</button>
@@ -64,7 +65,7 @@
         <option value="9">Miscellaneous Expense</option>
         <option value="10">Miscellaneous Debt</option>
       </select>
-      <input type="number" min="0" step="100" name="debt">
+      <input type="number" min="0" name="debt">
       <button>Add additional</button>
     </form>
     <a class="next-section-button" href="#results-section">Next</a>

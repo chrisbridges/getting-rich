@@ -1,6 +1,10 @@
 const ALPHA_VANTAGE_API_KEY = 'YFIGM2L9A2765AB9';
 const ALPHA_VANTAGE_ENDPOINT = 'https://www.alphavantage.co/query';
 
+const incomes = {};
+const expenses = {};
+const investments = {};
+
 function addAdditionalIncomeInput () {
   const incomeSelect = `<br><select>
         <option value="0">Salary / Wages</option>
@@ -15,6 +19,10 @@ function addAdditionalIncomeInput () {
   $('.add-additional').on('click', function() {
     $('#income-form').append(incomeSelect);
   });
+}
+
+function storingIncomeValues () {
+  
 }
 
 $(addAdditionalIncomeInput);
