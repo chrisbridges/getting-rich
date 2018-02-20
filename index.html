@@ -34,16 +34,16 @@
   </section>
 
   <section id="investment-section">
-    <form>
+    <form id="investment-form">
       <legend>Investments &amp; Assets</legend>
       <label></label>
       <select>
-        <option value="0">NYSE / NASDAQ Holding</option>
-        <option value="1">Cryptocurrency</option>
+        <option value="Stocks">NYSE / NASDAQ Holding</option>
+        <option value="Crypto">Cryptocurrency</option>
       </select>
-      <input type="number" min="0" name="investment-quantity" placeholder="# of shares">
+      <input type="number" min="0" name="investment-quantity" id="investment-quantity" placeholder="# of shares">
       <span>shares of</span>
-      <input type="text" name="investment" placeholder="AAPL, MSFT, VTSAX, etc.">
+      <input type="text" name="investment" id="investment" placeholder="AAPL, MSFT, VTSAX, etc.">
       <button type="submit">Submit</button>
     </form>
     <a class="next-section-button" href="#expense-section">Next</a>

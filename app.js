@@ -38,7 +38,34 @@ function displayValues (valueObj, incomeOrExpense) {
   $(`.user-${incomeOrExpense}-values`).html(output);
 }
 
-function storingInvestments () {
+function listenForUserInvestments () {
+  $('#investment-form').submit(function(event) {
+    event.preventDefault();
+    let userInvestment = $('#investment').val();
+    const params = {
+      function: 'TIME_SERIES_INTRADAY',
+      symbol: userInvestment,
+      interval: '1min',
+      apikey: ALPHA_VANTAGE_API_KEY
+    };
+  //let stock = userInput
+  // use .fail for errors
+    let investmentData = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params, storingInvestments(userInvestment)).fail(investmentError);
+    console.log(investmentData);
+  });
+}
+
+function storingInvestments (userInvestment) {
+  //only store valid investments. Check for errors on the listening func before storing
+  investments[userInvestment] = userInvestment;
+  console.log(investments);
+}
+
+function investmentError () {
+  console.log('Sorry. We\'re having trouble finding that investment right now.');
+}
+
+function listenForUserDebts () {
 
 }
 
@@ -48,3 +75,4 @@ function storingDebts () {
 
 $(listenForUserIncome);
 $(listenForUserExpense);
+$(listenForUserInvestments);
