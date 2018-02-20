@@ -4,6 +4,7 @@ const ALPHA_VANTAGE_ENDPOINT = 'https://www.alphavantage.co/query';
 const incomes = {};
 const expenses = {};
 const investments = {};
+const debts = {};
 
 function listenForUserIncome () {
   $('#income-form').submit(function(event) {
@@ -12,7 +13,7 @@ function listenForUserIncome () {
   });
 }
 function listenForUserExpense () {
-  $('expense-form').submit(function(event) {
+  $('#expense-form').submit(function(event) {
     event.preventDefault();
     storingValues(expenses, 'expense');
   });
@@ -38,3 +39,4 @@ function displayValues (valueObj, incomeOrExpense) {
 }
 
 $(listenForUserIncome);
+$(listenForUserExpense);
