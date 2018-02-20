@@ -30,17 +30,17 @@ function storingIncomeValues () {
     }
     console.log(incomes);
     $('#income').val('');
-    displayValues(incomes);
+    displayValues(incomes, 'income');
   });
 }
 
 //on income submit, prepend income values to section and allow user to delete them with click 
-function displayValues (values) {
+function displayValues (values, incomeOrExpense) {
   let output = '';
   for (var prop in values) {
     output += `${prop} - $${values[prop]}<br>`;
   }
-  $('.user-income-values').html(output);
+  $(`.user-${incomeOrExpense}-values`).html(output);
 }
 
 $(storingIncomeValues);
