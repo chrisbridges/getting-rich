@@ -9,36 +9,59 @@ const debts = [];
 function listenForUserIncome () {
   $('#income-form').submit(function(event) {
     event.preventDefault();
-    //storingValues(incomes, 'income');
+
+    let userIncomeType = $('#income-option').val();
+    let userIncomeAmount = $('#income').val();
+
+    $('#income').val('');
+
+    storingIncomes(userIncomeType, userIncomeAmount);
   });
 }
+
+function storingIncomes (userIncomeType, userIncomeAmount) {
+  incomes.push({
+    'Income Type': userIncomeType,
+    'Income Amount': userIncomeAmount
+  });
+  displayIncomes();
+}
+
+function displayIncomes () {
+  let output = '';
+  incomes.map(function(income) {
+    output += `${income['Income Type']}: $${income['Income Amount']}<br>`;
+  });
+  $('.user-income-values').html(output);
+}
+
 function listenForUserExpense () {
   $('#expense-form').submit(function(event) {
     event.preventDefault();
-    //storingValues(expenses, 'expense');
+
+    let userExpenseType = $('#expense-option').val();
+    let userExpenseAmount = $('#expense').val();
+
+    $('#expense').val('');
+
+    storingExpenses(userExpenseType, userExpenseAmount);
   });
 }
 
-function storingIncomes (valueArray, incomeOrExpense) {
-  /*if (valueObj.hasOwnProperty($(`#${incomeOrExpense}-option`).val())) {
-    valueObj[$(`#${incomeOrExpense}-option`).val()] += parseInt($(`#${incomeOrExpense}`).val());
-  } else {
-    valueObj[$(`#${incomeOrExpense}-option`).val()] = parseInt($(`#${incomeOrExpense}`).val());
-  }*/
-
-
-
-  console.log(valueArray);
-  $(`#${incomeOrExpense}`).val('');
-  displayValues(valueArray, incomeOrExpense);
+function storingExpenses (userExpenseType, userExpenseAmount) {
+  expenses.push({
+    'Expense Type': userExpenseType,
+    'Expense Amount': userExpenseAmount
+  });
+  displayExpenses();
 }
 
-function displayValues (valueObj, incomeOrExpense) {
+function displayExpenses () {
   let output = '';
-  for (let prop in valueObj) {
-    output += `${prop} - $${valueObj[prop]}<br>`;
-  }
-  $(`.user-${incomeOrExpense}-values`).html(output);
+  expenses.map(function(expense) {
+    output += `${expense['Expense Type']}: $${expense['Expense Amount']}<br>`;
+  });
+  $('.user-expense-values').html(output);
 }
 
 function listenForUserInvestments () {
