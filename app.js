@@ -4,7 +4,7 @@ const ALPHA_VANTAGE_ENDPOINT = 'https://www.alphavantage.co/query';
 const incomes = {};
 const expenses = {};
 const investments = {};
-const debts = {};
+const debts = [];
 
 function listenForUserIncome () {
   $('#income-form').submit(function(event) {
@@ -81,13 +81,36 @@ function investmentError () {
 }
 
 function listenForUserDebts () {
-
+  $('#debt-form').submit(function(event) {
+    event.preventDefault();
+    let userDebt = $('#debt-option').val();
+    let userDebtAmountOwed = $('#debt').val();
+    let userDebtInterestRate = parseInt($('#interest-rate').val());
+    $('#debt').val('');
+    $('#interest-rate').val('');
+    storingDebts(userDebt, userDebtAmountOwed, userDebtInterestRate);
+  });
 }
 
-function storingDebts () {
-
+function storingDebts (userDebt, userDebtAmountOwed, userDebtInterestRate) {
+  debts.push({
+    'Debt Type': userDebt,
+    'Amount owed': userDebtAmountOwed,
+    'Interest Rate': userDebtInterestRate
+  });
+  console.log(debts);
 }
+
+function summarizeResults () {
+  summarizeIncomes();
+  summarizeInvestments();
+  summarizeExpenses();
+  summarizeDebts();
+}
+
+
 
 $(listenForUserIncome);
 $(listenForUserExpense);
 $(listenForUserInvestments);
+$(listenForUserDebts);
