@@ -41,7 +41,7 @@ function displayValues (valueObj, incomeOrExpense) {
 function listenForUserInvestments () {
   $('#investment-form').submit(function(event) {
     event.preventDefault();
-    let userInvestment = $('#investment').val();
+    let userInvestment = $('#investment').val().toUpperCase();
     const params = {
       function: 'TIME_SERIES_INTRADAY',
       symbol: userInvestment,
