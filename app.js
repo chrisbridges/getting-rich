@@ -85,20 +85,20 @@ function listenForUserInvestments () {
 }
 
 function storingInvestments (userInvestment, numberOfShares) {
-  if (investments.hasOwnProperty(userInvestment)) {
-    investments[userInvestment] += parseInt(numberOfShares);
-  } else {
-    investments[userInvestment] = parseInt(numberOfShares);
-  }
+  investments.push({
+    'Investment': userInvestment,
+    'Amount Owned': numberOfShares
+  });
+
   console.log(investments);
   displayInvestments();
 }
 
 function displayInvestments () {
   let output = '';
-  for (let prop in investments) {
-    output += `${investments[prop]} shares of ${prop}<br>`;
-  }
+  investments.map(function(investment) {
+    output += `${investment['Investment']}: ${investment['Amount Owned']}<br>`;
+  });
   $('.user-investment-values').html(output);
 }
 
