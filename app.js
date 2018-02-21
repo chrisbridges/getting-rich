@@ -139,7 +139,7 @@ function displayDebts () {
   $('.user-debt-values').html(output);
 }
 
-function summarizeResults () {
+/*function summarizeResults () {
   summarizeIncomes();
   summarizeInvestments();
   summarizeExpenses();
@@ -152,9 +152,18 @@ function ticker () {
   expensesPerSecond();
   debtsPerSecond();
 }
+*/
+function totalIncomePerSecond () {
+  $('.income-next-section-button').on('click', function() {
+    return incomes.reduce(function(total, income) {
+      return total + incomePerSecond(income['Income Amount']);
+    });
+  });
+}
 
-function incomePerSecond() {
-
+function incomePerSecond(income) {
+  const secondsIn30Days = 2592000;
+  return income / secondsIn30Days;
 }
 
 
@@ -162,3 +171,4 @@ $(listenForUserIncome);
 $(listenForUserExpense);
 $(listenForUserInvestments);
 $(listenForUserDebts);
+$(totalIncomePerSecond);
