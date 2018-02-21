@@ -1,41 +1,67 @@
 const ALPHA_VANTAGE_API_KEY = 'YFIGM2L9A2765AB9';
 const ALPHA_VANTAGE_ENDPOINT = 'https://www.alphavantage.co/query';
 
-const incomes = {};
-const expenses = {};
-const investments = {};
+const incomes = [];
+const expenses = [];
+const investments = [];
 const debts = [];
 
 function listenForUserIncome () {
   $('#income-form').submit(function(event) {
     event.preventDefault();
-    storingValues(incomes, 'income');
+
+    let userIncomeType = $('#income-option').val();
+    let userIncomeAmount = $('#income').val();
+
+    $('#income').val('');
+
+    storingIncomes(userIncomeType, userIncomeAmount);
   });
 }
+
+function storingIncomes (userIncomeType, userIncomeAmount) {
+  incomes.push({
+    'Income Type': userIncomeType,
+    'Income Amount': userIncomeAmount
+  });
+  displayIncomes();
+}
+
+function displayIncomes () {
+  let output = '';
+  incomes.map(function(income) {
+    output += `${income['Income Type']}: $${income['Income Amount']}<br>`;
+  });
+  $('.user-income-values').html(output);
+}
+
 function listenForUserExpense () {
   $('#expense-form').submit(function(event) {
     event.preventDefault();
-    storingValues(expenses, 'expense');
+
+    let userExpenseType = $('#expense-option').val();
+    let userExpenseAmount = $('#expense').val();
+
+    $('#expense').val('');
+
+    storingExpenses(userExpenseType, userExpenseAmount);
   });
 }
 
-function storingValues (valueObj, incomeOrExpense) {
-  if (valueObj.hasOwnProperty($(`#${incomeOrExpense}-option`).val())) {
-    valueObj[$(`#${incomeOrExpense}-option`).val()] += parseInt($(`#${incomeOrExpense}`).val());
-  } else {
-    valueObj[$(`#${incomeOrExpense}-option`).val()] = parseInt($(`#${incomeOrExpense}`).val());
-  }
-  console.log(valueObj);
-  $(`#${incomeOrExpense}`).val('');
-  displayValues(valueObj, incomeOrExpense);
+function storingExpenses (userExpenseType, userExpenseAmount) {
+  expenses.push({
+    'Expense Type': userExpenseType,
+    'Expense Amount': userExpenseAmount
+  });
+  displayExpenses();
 }
 
-function displayValues (valueObj, incomeOrExpense) {
+function displayExpenses () {
   let output = '';
-  for (let prop in valueObj) {
-    output += `${prop} - $${valueObj[prop]}<br>`;
-  }
-  $(`.user-${incomeOrExpense}-values`).html(output);
+  expenses.map(function(expense) {
+    output += `${expense['Expense Type']}: $${expense['Expense Amount']}<br>`;
+  });
+  $('.user-expense-values').html(output);
 }
 
 function listenForUserInvestments () {
@@ -59,20 +85,20 @@ function listenForUserInvestments () {
 }
 
 function storingInvestments (userInvestment, numberOfShares) {
-  if (investments.hasOwnProperty(userInvestment)) {
-    investments[userInvestment] += parseInt(numberOfShares);
-  } else {
-    investments[userInvestment] = parseInt(numberOfShares);
-  }
+  investments.push({
+    'Investment': userInvestment,
+    'Amount Owned': numberOfShares
+  });
+
   console.log(investments);
   displayInvestments();
 }
 
 function displayInvestments () {
   let output = '';
-  for (let prop in investments) {
-    output += `${investments[prop]} shares of ${prop}<br>`;
-  }
+  investments.map(function(investment) {
+    output += `${investment['Investment']}: ${investment['Amount Owned']}<br>`;
+  });
   $('.user-investment-values').html(output);
 }
 
@@ -127,6 +153,9 @@ function ticker () {
   debtsPerSecond();
 }
 
+function incomePerSecond() {
+
+}
 
 
 $(listenForUserIncome);
