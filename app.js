@@ -86,19 +86,31 @@ function listenForUserDebts () {
     let userDebt = $('#debt-option').val();
     let userDebtAmountOwed = $('#debt').val();
     let userDebtInterestRate = parseInt($('#interest-rate').val());
+    let userDebtMonthlyPayment = parseInt($('#monthly-payment').val());
     $('#debt').val('');
     $('#interest-rate').val('');
-    storingDebts(userDebt, userDebtAmountOwed, userDebtInterestRate);
+    $('#monthly-payment').val('')
+    storingDebts(userDebt, userDebtAmountOwed, userDebtInterestRate, userDebtMonthlyPayment);
   });
 }
 
-function storingDebts (userDebt, userDebtAmountOwed, userDebtInterestRate) {
+function storingDebts (userDebt, userDebtAmountOwed, userDebtInterestRate, userDebtMonthlyPayment) {
   debts.push({
     'Debt Type': userDebt,
     'Amount owed': userDebtAmountOwed,
-    'Interest Rate': userDebtInterestRate
+    'Interest Rate': userDebtInterestRate,
+    'Monthly Payment': userDebtMonthlyPayment
   });
   console.log(debts);
+  displayDebts();
+}
+
+function displayDebts () {
+  let output = '';
+  debts.map(function(debt) {
+    output += `${debt['Debt Type']}: $${debt['Amount owed']} @ ${debt['Interest Rate']}% interest<br>Monthly Payment: $${debt['Monthly Payment']}<br>`;
+  });
+  $('.user-debt-values').html(output);
 }
 
 function summarizeResults () {
@@ -106,6 +118,13 @@ function summarizeResults () {
   summarizeInvestments();
   summarizeExpenses();
   summarizeDebts();
+}
+
+function ticker () {
+  incomePerSecond();
+  investmentsPerSecond();
+  expensesPerSecond();
+  debtsPerSecond();
 }
 
 
