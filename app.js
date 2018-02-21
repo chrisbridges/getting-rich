@@ -1,33 +1,36 @@
 const ALPHA_VANTAGE_API_KEY = 'YFIGM2L9A2765AB9';
 const ALPHA_VANTAGE_ENDPOINT = 'https://www.alphavantage.co/query';
 
-const incomes = {};
-const expenses = {};
-const investments = {};
+const incomes = [];
+const expenses = [];
+const investments = [];
 const debts = [];
 
 function listenForUserIncome () {
   $('#income-form').submit(function(event) {
     event.preventDefault();
-    storingValues(incomes, 'income');
+    //storingValues(incomes, 'income');
   });
 }
 function listenForUserExpense () {
   $('#expense-form').submit(function(event) {
     event.preventDefault();
-    storingValues(expenses, 'expense');
+    //storingValues(expenses, 'expense');
   });
 }
 
-function storingValues (valueObj, incomeOrExpense) {
-  if (valueObj.hasOwnProperty($(`#${incomeOrExpense}-option`).val())) {
+function storingIncomes (valueArray, incomeOrExpense) {
+  /*if (valueObj.hasOwnProperty($(`#${incomeOrExpense}-option`).val())) {
     valueObj[$(`#${incomeOrExpense}-option`).val()] += parseInt($(`#${incomeOrExpense}`).val());
   } else {
     valueObj[$(`#${incomeOrExpense}-option`).val()] = parseInt($(`#${incomeOrExpense}`).val());
-  }
-  console.log(valueObj);
+  }*/
+
+
+
+  console.log(valueArray);
   $(`#${incomeOrExpense}`).val('');
-  displayValues(valueObj, incomeOrExpense);
+  displayValues(valueArray, incomeOrExpense);
 }
 
 function displayValues (valueObj, incomeOrExpense) {
@@ -127,6 +130,9 @@ function ticker () {
   debtsPerSecond();
 }
 
+function incomePerSecond() {
+
+}
 
 
 $(listenForUserIncome);
