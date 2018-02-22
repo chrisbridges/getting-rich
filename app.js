@@ -35,6 +35,7 @@ function displayIncomes () {
     output += `${income['Income Type']}: $${income['Income Amount']}<br>`;
   });
   $('.user-income-values').html(output);
+  displayIncomePerSecond();
 }
 
 function listenForUserExpense () {
@@ -195,13 +196,32 @@ function debtPaymentPerSecond (monthlyPayment) {
 }
 
 function compoundInterestFormula (principal, interestRate, compoundRatePerYear, lengthOfDebtInYears) {
-  //const compoundRatePerYear = 365; // compounded daily
+  //calculates interest sans principal amount
   return principal * Math.pow((1 + (interestRate / 100) / compoundRatePerYear), (compoundRatePerYear * lengthOfDebtInYears)) - principal;
+}
+
+function totalInvestmentsPerSecond () { // look up how to handle a 503 error
+
+}
+
+function investmentsPerSecond () {
+
+}
+
+function displayIncomePerSecond () {
+  let output = '';
+  let incomesPer = incomes.map(function(income) {
+    let incomePer = incomePerSecond(income['Income Amount']);
+    output += `<li>${income['Income Type']}: $${incomePer.toFixed(5)}</li>`;
+  });
+  $('.income-list').html(output);
+  $('.income-total').html(totalIncomePerSecond().toFixed(5));
 }
 
 
 $(listenForUserIncome);
-$(listenForUserExpense);
 $(listenForUserInvestments);
+$(listenForUserExpense);
 $(listenForUserDebts);
 $(ticker);
+$(displayIncomePerSecond);

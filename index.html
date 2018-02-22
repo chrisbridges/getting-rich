@@ -41,9 +41,9 @@
         <option value="Stocks">NYSE / NASDAQ Holding</option>
         <option value="Crypto">Cryptocurrency</option>
       </select>
-      <input type="number" min="0" name="investment-quantity" id="investment-quantity" placeholder="# of shares">
+      <input type="number" min="1" name="investment-quantity" id="investment-quantity" placeholder="# of shares" required>
       <span>shares of</span>
-      <input type="text" name="investment" id="investment" placeholder="AAPL, MSFT, TSLA, etc.">
+      <input type="text" name="investment" id="investment" placeholder="AAPL, MSFT, TSLA, etc." required>
       <button type="submit">Submit</button>
     </form>
     <div class="user-investment-values"></div>
@@ -95,10 +95,10 @@
 
   <main role="main">
     <section id="result-section">
-      <div class="income-result"></div>
-      <div class="investment-result"></div>
-      <div class="expense-result"></div>
-      <div class="debt-result"></div>
+      <div class="income-result">Incomes:<ul class="income-list"></ul><div>Total: $ <span class="income-total">0</span></div></div>
+      <div class="investment-result">Investments:<ul class="investment-list"></ul><div>Total: $ <span class="investment-total">0</span></div></div>
+      <div class="expense-result">Expenses:<ul class="expense-list"></ul><div>Total: $ <span class="expense-total">0</span></div></div>
+      <div class="debt-result">Debts:<ul class="debt-list"></ul><div>Total: $ <span class="debt-total">0</span></div></div>
       <div class="ticker"></div>
       <div class="disclaimer"></div>
     </section>
