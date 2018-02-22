@@ -233,10 +233,11 @@ function displayDebtPerSecond () {
   let output = '';
   let debtsPer = debts.map(function(debt) {
     let debtPer = debtPerSecond(debt['Amount Owed'], debt['Interest Rate']);
-    output += `<li>${debt['Debt Type']}: $${debtPer.toFixed(5)}</li>`;
+    output += `<li>${debt['Debt Type']} Interest: $${debtPer.toFixed(5)}<br>
+      Monthly Payment: ${debtPaymentPerSecond(debt['Monthly Payment']).toFixed(5)}</li>`;
   });
   $('.debt-list').html(output);
-  $('.debt-total').html(totalDebtPerSecond().toFixed(5));
+  $('.debt-total').html((totalDebtPerSecond() + totalDebtPaymentPerSecond()).toFixed(5));
 }
 
 
