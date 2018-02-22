@@ -144,21 +144,25 @@ function displayDebts () {
   summarizeInvestments();
   summarizeExpenses();
   summarizeDebts();
+}*/
+//nested function, run inner function every X seconds, first func on click
+function ticker () {
+  let tickerValue = 0;
+  function incrementTicker () {
+    tickerValue += totalIncomePerSecond();
+    $('.ticker').html(tickerValue.toFixed(5));
+  }
+  setInterval(incrementTicker, 1000);
 }
 
-function ticker () {
-  incomePerSecond();
-  investmentsPerSecond();
-  expensesPerSecond();
-  debtsPerSecond();
-}
-*/
 function totalIncomePerSecond () {
-  $('.income-next-section-button').on('click', function() {
+  //$('.income-next-section-button').on('click', function() {
+    //if (incomes.length) {
     return incomes.reduce(function(total, income) {
       return total + incomePerSecond(income['Income Amount']);
-    });
-  });
+    }, 0);
+  //}
+  //});
 }
 
 function incomePerSecond(income) {
@@ -171,4 +175,4 @@ $(listenForUserIncome);
 $(listenForUserExpense);
 $(listenForUserInvestments);
 $(listenForUserDebts);
-$(totalIncomePerSecond);
+$(ticker);
