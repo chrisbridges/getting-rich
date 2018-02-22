@@ -149,25 +149,32 @@ function displayDebts () {
 function ticker () {
   let tickerValue = 0;
   function incrementTicker () {
-    tickerValue += totalIncomePerSecond();
+    tickerValue += totalIncomePerSecond() - totalExpensesPerSecond();
     $('.ticker').html(tickerValue.toFixed(5));
   }
   setInterval(incrementTicker, 1000);
 }
 
 function totalIncomePerSecond () {
-  //$('.income-next-section-button').on('click', function() {
-    //if (incomes.length) {
-    return incomes.reduce(function(total, income) {
-      return total + incomePerSecond(income['Income Amount']);
-    }, 0);
-  //}
-  //});
+  return incomes.reduce(function(total, income) {
+    return total + incomePerSecond(income['Income Amount']);
+  }, 0);
 }
 
 function incomePerSecond(income) {
   const secondsIn30Days = 2592000;
   return income / secondsIn30Days;
+}
+
+function totalExpensesPerSecond () {
+  return expenses.reduce(function(total, expense) {
+    return total + expensesPerSecond(expense['Expense Amount']);
+  }, 0);
+}
+
+function expensesPerSecond (expense) {
+  const secondsIn30Days = 2592000;
+  return expense / secondsIn30Days;
 }
 
 
