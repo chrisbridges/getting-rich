@@ -7,6 +7,7 @@ const investments = [];
 const debts = [];
 
 const secondsIn30Days = 2592000;
+const removeElementButton = `<button class="remove-element-button">X</button>`;
 
 function listenForUserIncome () {
   $('#income-form').submit(function(event) {
@@ -32,9 +33,9 @@ function storingIncomes (userIncomeType, userIncomeAmount) {
 function displayIncomes () {
   let output = '';
   incomes.map(function(income) {
-    output += `${income['Income Type']}: $${income['Income Amount']}<br>`;
+    output += `<li>${income['Income Type']}: $${income['Income Amount']}</li>${removeElementButton}`;
   });
-  $('.user-income-values').html(output);
+  $('.user-income-list').html(output);
   displayIncomePerSecond();
 }
 
@@ -240,12 +241,19 @@ function displayDebtPerSecond () {
   $('.debt-total').html((totalDebtPerSecond() + totalDebtPaymentPerSecond()).toFixed(5));
 }
 
+function removeUserEntry () {
+  $('.remove-element-button').on('click', function(event) {
+    $(this).closest('li').remove();
+  });
+}
+
 
 $(listenForUserIncome);
 $(listenForUserInvestments);
 $(listenForUserExpense);
 $(listenForUserDebts);
 $(ticker);
-$(displayIncomePerSecond); //do I need to call these functions at all here?
+$(displayIncomePerSecond);
 $(displayExpensePerSecond);
 $(displayDebtPerSecond);
+$(removeUserEntry);
