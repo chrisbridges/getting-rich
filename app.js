@@ -6,6 +6,8 @@ const expenses = [];
 const investments = [];
 const debts = [];
 
+const secondsIn30Days = 2592000;
+
 function listenForUserIncome () {
   $('#income-form').submit(function(event) {
     event.preventDefault();
@@ -110,7 +112,7 @@ function listenForUserDebts () {
   $('#debt-form').submit(function(event) {
     event.preventDefault();
     let userDebt = $('#debt-option').val();
-    let userDebtAmountOwed = $('#debt').val();
+    let userDebtAmountOwed = parseInt($('#debt').val());
     let userDebtInterestRate = parseInt($('#interest-rate').val());
     let userDebtMonthlyPayment = parseInt($('#monthly-payment').val());
     $('#debt').val('');
@@ -123,7 +125,7 @@ function listenForUserDebts () {
 function storingDebts (userDebt, userDebtAmountOwed, userDebtInterestRate, userDebtMonthlyPayment) {
   debts.push({
     'Debt Type': userDebt,
-    'Amount owed': userDebtAmountOwed,
+    'Amount Owed': userDebtAmountOwed,
     'Interest Rate': userDebtInterestRate,
     'Monthly Payment': userDebtMonthlyPayment
   });
@@ -134,23 +136,17 @@ function storingDebts (userDebt, userDebtAmountOwed, userDebtInterestRate, userD
 function displayDebts () {
   let output = '';
   debts.map(function(debt) {
-    output += `${debt['Debt Type']}: $${debt['Amount owed']} @ ${debt['Interest Rate']}% interest<br>Monthly Payment: $${debt['Monthly Payment']}<br>`;
+    output += `${debt['Debt Type']}: $${debt['Amount Owed']} @ ${debt['Interest Rate']}% interest<br>Monthly Payment: $${debt['Monthly Payment']}<br>`;
   });
   $('.user-debt-values').html(output);
 }
 
-/*function summarizeResults () {
-  summarizeIncomes();
-  summarizeInvestments();
-  summarizeExpenses();
-  summarizeDebts();
-}*/
-//nested function, run inner function every X seconds, first func on click
 function ticker () {
   let tickerValue = 0;
   function incrementTicker () {
-    tickerValue += totalIncomePerSecond() - totalExpensesPerSecond();
-    $('.ticker').html(tickerValue.toFixed(5));
+    tickerValue += totalIncomePerSecond() - totalExpensesPerSecond() - totalDebtPerSecond() - totalDebtPaymentPerSecond();
+    console.log(tickerValue);
+    $('.ticker').html(`$ ${tickerValue.toFixed(5)}`);
   }
   setInterval(incrementTicker, 1000);
 }
@@ -162,7 +158,6 @@ function totalIncomePerSecond () {
 }
 
 function incomePerSecond(income) {
-  const secondsIn30Days = 2592000;
   return income / secondsIn30Days;
 }
 
@@ -173,8 +168,35 @@ function totalExpensesPerSecond () {
 }
 
 function expensesPerSecond (expense) {
-  const secondsIn30Days = 2592000;
   return expense / secondsIn30Days;
+}
+
+function totalDebtPerSecond () {
+  return debts.reduce(function(total, debt) {
+    return total + debtPerSecond(debt['Amount Owed'], debt['Interest Rate']);
+  }, 0);
+}
+
+function debtPerSecond (principal, interestRate) {
+  const monthsInYear = 12;
+  const compoundDaily = 365;
+  const oneYear = 1;
+  return compoundInterestFormula(principal, interestRate, compoundDaily, oneYear) / monthsInYear / secondsIn30Days;
+}
+
+function totalDebtPaymentPerSecond () {
+  return debts.reduce(function(total, debt) {
+    return total + debtPaymentPerSecond(debt['Monthly Payment']);
+  }, 0);
+}
+
+function debtPaymentPerSecond (monthlyPayment) {
+  return monthlyPayment / secondsIn30Days;
+}
+
+function compoundInterestFormula (principal, interestRate, compoundRatePerYear, lengthOfDebtInYears) {
+  //const compoundRatePerYear = 365; // compounded daily
+  return principal * Math.pow((1 + (interestRate / 100) / compoundRatePerYear), (compoundRatePerYear * lengthOfDebtInYears)) - principal;
 }
 
 
