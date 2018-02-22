@@ -141,13 +141,13 @@ function displayDebts () {
     output += `${debt['Debt Type']}: $${debt['Amount Owed']} @ ${debt['Interest Rate']}% interest<br>Monthly Payment: $${debt['Monthly Payment']}<br>`;
   });
   $('.user-debt-values').html(output);
+  displayDebtPerSecond();
 }
 
 function ticker () {
   let tickerValue = 0;
   function incrementTicker () {
     tickerValue += totalIncomePerSecond() - totalExpensesPerSecond() - totalDebtPerSecond() - totalDebtPaymentPerSecond();
-    console.log(tickerValue);
     $('.ticker').html(`$ ${tickerValue.toFixed(5)}`);
   }
   setInterval(incrementTicker, 1000);
@@ -229,11 +229,22 @@ function displayExpensePerSecond () {
   $('.expense-total').html(totalExpensesPerSecond().toFixed(5));
 }
 
+function displayDebtPerSecond () {
+  let output = '';
+  let debtsPer = debts.map(function(debt) {
+    let debtPer = debtPerSecond(debt['Amount Owed'], debt['Interest Rate']);
+    output += `<li>${debt['Debt Type']}: $${debtPer.toFixed(5)}</li>`;
+  });
+  $('.debt-list').html(output);
+  $('.debt-total').html(totalDebtPerSecond().toFixed(5));
+}
+
 
 $(listenForUserIncome);
 $(listenForUserInvestments);
 $(listenForUserExpense);
 $(listenForUserDebts);
 $(ticker);
-$(displayIncomePerSecond);
+$(displayIncomePerSecond); //do I need to call these functions at all here?
 $(displayExpensePerSecond);
+$(displayDebtPerSecond);
