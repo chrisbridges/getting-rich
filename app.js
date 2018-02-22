@@ -65,6 +65,7 @@ function displayExpenses () {
     output += `${expense['Expense Type']}: $${expense['Expense Amount']}<br>`;
   });
   $('.user-expense-values').html(output);
+  displayExpensePerSecond();
 }
 
 function listenForUserInvestments () {
@@ -218,6 +219,16 @@ function displayIncomePerSecond () {
   $('.income-total').html(totalIncomePerSecond().toFixed(5));
 }
 
+function displayExpensePerSecond () {
+  let output = '';
+  let expensesPer = expenses.map(function(expense) {
+    let expensePer = expensePerSecond(expense['Expense Amount']);
+    output += `<li>${expense['Expense Type']}: $${expensePer.toFixed(5)}</li>`;
+  });
+  $('.expense-list').html(output);
+  $('.expense-total').html(totalExpensesPerSecond().toFixed(5));
+}
+
 
 $(listenForUserIncome);
 $(listenForUserInvestments);
@@ -225,3 +236,4 @@ $(listenForUserExpense);
 $(listenForUserDebts);
 $(ticker);
 $(displayIncomePerSecond);
+$(displayExpensePerSecond);
