@@ -222,7 +222,7 @@ function displayIncomePerSecond () {
 function displayExpensePerSecond () {
   let output = '';
   let expensesPer = expenses.map(function(expense) {
-    let expensePer = expensePerSecond(expense['Expense Amount']);
+    let expensePer = expensesPerSecond(expense['Expense Amount']);
     output += `<li>${expense['Expense Type']}: $${expensePer.toFixed(5)}</li>`;
   });
   $('.expense-list').html(output);
