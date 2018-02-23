@@ -241,10 +241,10 @@ function displayDebtPerSecond () {
   $('.debt-total').html((totalDebtPerSecond() + totalDebtPaymentPerSecond()).toFixed(5));
 }
 
-function removeUserEntry () {
+function removeUserEntry () { // removing everything. work on
   $('.user-income-list').on('click', '.remove-element-button', function(event) {
-    console.log($(this));
-    $(this).parent().remove();
+    console.log($(this).index());
+    $('.user-income-list').parent().remove();
   });
 }
 
