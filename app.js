@@ -242,8 +242,9 @@ function displayDebtPerSecond () {
 }
 
 function removeUserEntry () {
-  $('.remove-element-button').on('click', function(event) {
-    $(this).closest('li').remove();
+  $('.user-income-list').on('click', '.remove-element-button', function(event) {
+    console.log($(this));
+    $(this).parent().remove();
   });
 }
 
