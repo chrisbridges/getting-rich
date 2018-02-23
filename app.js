@@ -63,7 +63,7 @@ function storingExpenses (userExpenseType, userExpenseAmount) {
 function displayExpenses () {
   let output = '';
   expenses.map(function(expense) {
-    output += `${expense['Expense Type']}: $${expense['Expense Amount']}<br>`;
+    output += `<li>${expense['Expense Type']}: $${expense['Expense Amount']}${removeElementButton}</li>`;
   });
   $('.user-expense-values').html(output);
   displayExpensePerSecond();
@@ -102,7 +102,7 @@ function storingInvestments (userInvestment, numberOfShares) {
 function displayInvestments () {
   let output = '';
   investments.map(function(investment) {
-    output += `${investment['Investment']}: ${investment['Amount Owned']}<br>`;
+    output += `<li>${investment['Investment']}: ${investment['Amount Owned']}${removeElementButton}</li>`;
   });
   $('.user-investment-values').html(output);
 }
@@ -139,7 +139,7 @@ function storingDebts (userDebt, userDebtAmountOwed, userDebtInterestRate, userD
 function displayDebts () {
   let output = '';
   debts.map(function(debt) {
-    output += `${debt['Debt Type']}: $${debt['Amount Owed']} @ ${debt['Interest Rate']}% interest<br>Monthly Payment: $${debt['Monthly Payment']}<br>`;
+    output += `<li>${debt['Debt Type']}: $${debt['Amount Owed']} @ ${debt['Interest Rate']}% interest<br>Monthly Payment: $${debt['Monthly Payment']}${removeElementButton}</li>`;
   });
   $('.user-debt-values').html(output);
   displayDebtPerSecond();
@@ -241,7 +241,7 @@ function displayDebtPerSecond () {
   $('.debt-total').html((totalDebtPerSecond() + totalDebtPaymentPerSecond()).toFixed(5));
 }
 
-function removeUserEntry () { // removing everything. work on
+function removeUserEntryIncome () {
   $('.user-income-list').on('click', '.remove-element-button', function(event) {
     console.log($(this).closest('li').index());
     $(this).closest('li').remove();
@@ -250,6 +250,32 @@ function removeUserEntry () { // removing everything. work on
   });
 }
 
+function removeUserEntryExpense () {
+  $('.user-expense-list').on('click', '.remove-element-button', function(event) {
+    console.log($(this).closest('li').index());
+    $(this).closest('li').remove();
+    expenses.splice($(this).closest('li').index(), 1);
+    displayExpensePerSecond();
+  });
+}
+
+function removeUserEntryInvestments () {
+  $('.user-investment-list').on('click', '.remove-element-button', function(event) {
+    console.log($(this).closest('li').index());
+    $(this).closest('li').remove();
+    investments.splice($(this).closest('li').index(), 1);
+    displayInvestmentPerSecond();
+  });
+}
+
+function removeUserEntryDebts () {
+  $('.user-debt-list').on('click', '.remove-element-button', function(event) {
+    console.log($(this).closest('li').index());
+    $(this).closest('li').remove();
+    debts.splice($(this).closest('li').index(), 1);
+    displayDebtPerSecond();
+  });
+}
 
 $(listenForUserIncome);
 $(listenForUserInvestments);
@@ -259,4 +285,8 @@ $(ticker);
 $(displayIncomePerSecond);
 $(displayExpensePerSecond);
 $(displayDebtPerSecond);
-$(removeUserEntry);
+$(removeUserEntryIncome);
+$(removeUserEntryExpense);
+$(removeUserEntryInvestments);
+$(removeUserEntryDebts);
+
