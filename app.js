@@ -245,6 +245,8 @@ function removeUserEntry () { // removing everything. work on
   $('.user-income-list').on('click', '.remove-element-button', function(event) {
     console.log($(this).closest('li').index());
     $(this).closest('li').remove();
+    incomes.splice($(this).closest('li').index(), 1);
+    displayIncomePerSecond();
   });
 }
 
