@@ -33,7 +33,7 @@ function storingIncomes (userIncomeType, userIncomeAmount) {
 function displayIncomes () {
   let output = '';
   incomes.map(function(income) {
-    output += `<li>${income['Income Type']}: $${income['Income Amount']}</li>${removeElementButton}`;
+    output += `<li>${income['Income Type']}: $${income['Income Amount']}${removeElementButton}</li>`;
   });
   $('.user-income-list').html(output);
   displayIncomePerSecond();
@@ -243,8 +243,8 @@ function displayDebtPerSecond () {
 
 function removeUserEntry () { // removing everything. work on
   $('.user-income-list').on('click', '.remove-element-button', function(event) {
-    console.log($(this).index());
-    $('.user-income-list').parent().remove();
+    console.log($(this).closest('li').index());
+    $(this).closest('li').remove();
   });
 }
 
