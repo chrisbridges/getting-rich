@@ -160,24 +160,16 @@ function listenForUserInvestments () {
     let sharePriceOnCall = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params).done(function (data) { // need to get JUST the price when this is called. So close...
       const price = data['Time Series (1min)'][timePageLoaded()]['4. close'];
       console.log(price);
-      return price;
-    });
-    console.log(sharePriceOnCall);
-    storingInvestments(userInvestment, numberOfShares, sharePriceOnCall);
+      storingInvestments(userInvestment, numberOfShares, price);
+    }); 
   });
 }
 
-function getCurrentPrice (data) {
-  const price =  data['Time Series (1min)'][timePageLoaded()]['4. close'];
-  console.log(price);
-  return price;
-}
-
-function storingInvestments (userInvestment, numberOfShares, sharePriceOnCall) {
+function storingInvestments (userInvestment, numberOfShares, price) {
   investments.push({
     'Investment': userInvestment,
     'Amount Owned': numberOfShares,
-    'Price on Call': sharePriceOnCall
+    'Price on Call': price
   });
 
   console.log(investments);
@@ -187,7 +179,7 @@ function storingInvestments (userInvestment, numberOfShares, sharePriceOnCall) {
 function displayInvestments () {
   let output = '';
   investments.map(function(investment) {
-    output += `<li>${investment['Investment']}: ${investment['Amount Owned']}${removeElementButton}</li>`;
+    output += `<li>${investment['Investment']}: ${investment['Amount Owned']} share @ ${investment['Price on Call']} (Current Price)${removeElementButton}</li>`;
   });
   $('.user-investment-values').html(output);
 }
