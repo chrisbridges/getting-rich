@@ -12,6 +12,7 @@ const removeElementButton = `<button class="remove-element-button">X</button>`;
 const timePageLoaded = function () {
 
   const currentDate = new Date();
+  const dayOfTheWeek = currentDate.getDay();
   let hour = currentDate.getHours();
   let minute = currentDate.getMinutes();
   let second = currentDate.getSeconds();
@@ -40,6 +41,29 @@ const timePageLoaded = function () {
 
   calibrateLocalTimetoEST();
 
+  function areMarketsClosed () {
+    const isWeekDay = dayOfTheWeek >= 1 && dayOfTheWeek <= 5;
+
+    if (isWeekDay === 1 && (hour <= 9 && minute <= 30)) { // if Monday before opening, knock it back to Friday close
+      date -= 3;
+      currentTimeWithPadding = `16:00:00`;
+    } else if (isWeekDay && (hour <= 9 && minute <= 30)) { // if markets are not open yet, stock price is pegged at previous day's close
+      currentTimeWithPadding = `16:00:00`;
+      date -= 1;
+    } else if (isWeekDay && (hour > 16)) { // if market has already closed, price is set at closing price
+      currentTimeWithPadding = `16:00:00`;
+    }
+
+    if (dayOfTheWeek === 6) { // if Sat/Sun, peg price to previous Fri close
+      date -= 1;
+      currentTimeWithPadding = `16:00:00`;
+    }
+    if (dayOfTheWeek === 0) {
+      date -= 2;
+      currentTimeWithPadding = `16:00:00`;
+    }
+  }
+
   function addPadding (time) {
     if (time < 10) {
       time = '0' + time;
@@ -48,31 +72,14 @@ const timePageLoaded = function () {
   }
 
   let currentTimeWithPadding = `${addPadding(hour)}:${addPadding(minute)}:${addPadding(second)}`;
+
+  areMarketsClosed();
+
   let currentDateWithPadding = `${year}-${addPadding(month)}-${addPadding(date)}`;
-
-
-  function areMarketsClosed () {
-    if (currentDate.getDay() === 6) { // days are 0-indexed. Sunday is 0. Saturday is 6.
-      date -= 1;
-      currentTimeWithPadding = `16:00:00`;
-    }
-    if (currentDate.getDay() === 0) {
-      date -= 2;
-      currentTimeWithPadding = `16:00:00`;
-    }
-  }
-
-  if (hour < 9 && minute <= 30) { // if markets are not open yet, stock price is pegged at previous day's close, if the weekend, take Fri closing price
-    currentTimeWithPadding = `16:00:00`;
-    date -= 1;
-  } else if (hour > 16) { // if market has already closed, price is set at closing price
-    currentTimeWithPadding = `16:00:00`;
-  }
-
   let currentTimeAndDateWithPadding = `${currentDateWithPadding} ${currentTimeWithPadding}`;
 
-  console.log(`${currentDateWithPadding} ${currentTimeWithPadding}`);
-  return `${currentDateWithPadding} ${currentTimeWithPadding}`;
+  console.log(currentTimeAndDateWithPadding);
+  return currentTimeAndDateWithPadding;
 }
 
 function listenForUserIncome () {
