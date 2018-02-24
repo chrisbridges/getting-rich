@@ -9,6 +9,34 @@ const debts = [];
 const secondsIn30Days = 2592000;
 const removeElementButton = `<button class="remove-element-button">X</button>`;
 
+const timePageLoaded = function () {
+
+  const currentDate = new Date();
+  let hour = currentDate.getHours();
+  let minute = currentDate.getMinutes();
+  let second = currentDate.getSeconds();
+  let month = currentDate.getMonth() + 1;
+  let date = currentDate.getDate();
+  const year = currentDate.getFullYear();
+
+  function addPadding (time) {
+    if (time < 10) {
+      time = '0' + time;
+    }
+    return time;
+  }
+
+  let currentTimeWithPadding = `${addPadding(hour)}:${addPadding(minute)}:${addPadding(second)}`;
+
+  if (hour < 9 || hour > 16) {
+      currentTimeWithPadding = `16:00:00`;
+  }
+
+  const currentDateWithPadding = `${year}-${addPadding(month)}-${addPadding(date)}`;
+  console.log(`${currentDateWithPadding} ${currentTimeWithPadding}`);
+  return `${currentDateWithPadding} ${currentTimeWithPadding}`;
+}
+
 function listenForUserIncome () {
   $('#income-form').submit(function(event) {
     event.preventDefault();
@@ -84,15 +112,16 @@ function listenForUserInvestments () {
       apikey: ALPHA_VANTAGE_API_KEY
     };
 
-    let investmentData = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params, storingInvestments(userInvestment, numberOfShares)).fail(investmentError);
+    let investmentData = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params, storingInvestments(userInvestment, numberOfShares, json)).fail(investmentError);
     console.log(investmentData);
   });
 }
 
-function storingInvestments (userInvestment, numberOfShares) {
+function storingInvestments (userInvestment, numberOfShares, json) {
   investments.push({
     'Investment': userInvestment,
-    'Amount Owned': numberOfShares
+    'Amount Owned': numberOfShares,
+    'Price on Call': json['Time Series (1min)'][timePageLoaded]['4. close']
   });
 
   console.log(investments);
@@ -241,7 +270,7 @@ function displayDebtPerSecond () {
   $('.debt-total').html((totalDebtPerSecond() + totalDebtPaymentPerSecond()).toFixed(5));
 }
 
-function removeUserEntryIncome () {
+function removeUserEntryIncome () { // remove funcs only working for income. What's that about?
   $('.user-income-list').on('click', '.remove-element-button', function(event) {
     console.log($(this).closest('li').index());
     $(this).closest('li').remove();
@@ -277,6 +306,7 @@ function removeUserEntryDebts () {
   });
 }
 
+$(timePageLoaded);
 $(listenForUserIncome);
 $(listenForUserInvestments);
 $(listenForUserExpense);
