@@ -15,9 +15,30 @@ const timePageLoaded = function () {
   let hour = currentDate.getHours();
   let minute = currentDate.getMinutes();
   let second = currentDate.getSeconds();
-  let month = currentDate.getMonth() + 1;
+  let month = currentDate.getMonth() + 1; // month values are 0-indexed
   let date = currentDate.getDate();
   const year = currentDate.getFullYear();
+
+  function calibrateLocalTimetoEST () {
+    const desiredDifferenceInMinutesBetweenTimeZones = 300; // UTC is 5 hours ahead of EST
+    let differenceInMinutesBetweenTimeZones = currentDate.getTimezoneOffset();
+    if (differenceInMinutesBetweenTimeZones > desiredDifferenceInMinutesBetweenTimeZones) {
+      while (differenceInMinutesBetweenTimeZones > desiredDifferenceInMinutesBetweenTimeZones) {
+        hour += 1;
+        differenceInMinutesBetweenTimeZones -= 60;
+      }
+      minute -= (differenceInMinutesBetweenTimeZones - desiredDifferenceInMinutesBetweenTimeZones);
+    }
+    if (differenceInMinutesBetweenTimeZones < desiredDifferenceInMinutesBetweenTimeZones) {
+      while (differenceInMinutesBetweenTimeZones < desiredDifferenceInMinutesBetweenTimeZones) {
+        hour -= 1;
+        differenceInMinutesBetweenTimeZones += 60;
+      }
+       minute -= (differenceInMinutesBetweenTimeZones - desiredDifferenceInMinutesBetweenTimeZones);
+    }
+  }
+
+  calibrateLocalTimetoEST();
 
   function addPadding (time) {
     if (time < 10) {
@@ -27,12 +48,29 @@ const timePageLoaded = function () {
   }
 
   let currentTimeWithPadding = `${addPadding(hour)}:${addPadding(minute)}:${addPadding(second)}`;
+  let currentDateWithPadding = `${year}-${addPadding(month)}-${addPadding(date)}`;
 
-  if (hour < 9 || hour > 16) {
+
+  function areMarketsClosed () {
+    if (currentDate.getDay() === 6) { // days are 0-indexed. Sunday is 0. Saturday is 6.
+      date -= 1;
       currentTimeWithPadding = `16:00:00`;
+    }
+    if (currentDate.getDay() === 0) {
+      date -= 2;
+      currentTimeWithPadding = `16:00:00`;
+    }
   }
 
-  const currentDateWithPadding = `${year}-${addPadding(month)}-${addPadding(date)}`;
+  if (hour < 9 && minute <= 30) { // if markets are not open yet, stock price is pegged at previous day's close, if the weekend, take Fri closing price
+    currentTimeWithPadding = `16:00:00`;
+    date -= 1;
+  } else if (hour > 16) { // if market has already closed, price is set at closing price
+    currentTimeWithPadding = `16:00:00`;
+  }
+
+  let currentTimeAndDateWithPadding = `${currentDateWithPadding} ${currentTimeWithPadding}`;
+
   console.log(`${currentDateWithPadding} ${currentTimeWithPadding}`);
   return `${currentDateWithPadding} ${currentTimeWithPadding}`;
 }
