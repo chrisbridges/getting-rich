@@ -9,7 +9,7 @@ const debts = [];
 const secondsIn30Days = 2592000;
 const removeElementButton = `<button class="remove-element-button">X</button>`;
 
-const timePageLoaded = function () {
+function timePageLoaded () {
 
   const currentDate = new Date();
   const dayOfTheWeek = currentDate.getDay();
@@ -157,16 +157,27 @@ function listenForUserInvestments () {
       apikey: ALPHA_VANTAGE_API_KEY
     };
 
-    let investmentData = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params, storingInvestments(userInvestment, numberOfShares, json)).fail(investmentError);
-    console.log(investmentData);
+    let sharePriceOnCall = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params).done(function (data) { // need to get JUST the price when this is called. So close...
+      const price = data['Time Series (1min)'][timePageLoaded()]['4. close'];
+      console.log(price);
+      return price;
+    });
+    console.log(sharePriceOnCall);
+    storingInvestments(userInvestment, numberOfShares, sharePriceOnCall);
   });
 }
 
-function storingInvestments (userInvestment, numberOfShares, json) {
+function getCurrentPrice (data) {
+  const price =  data['Time Series (1min)'][timePageLoaded()]['4. close'];
+  console.log(price);
+  return price;
+}
+
+function storingInvestments (userInvestment, numberOfShares, sharePriceOnCall) {
   investments.push({
     'Investment': userInvestment,
     'Amount Owned': numberOfShares,
-    'Price on Call': json['Time Series (1min)'][timePageLoaded]['4. close']
+    'Price on Call': sharePriceOnCall
   });
 
   console.log(investments);
