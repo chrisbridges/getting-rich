@@ -197,7 +197,6 @@ function listenForUserInvestments () {
       }); 
     }
 
-
     if ($('#investment-option').val() === "Crypto") {
       let userInvestment = $('#investment').val().toUpperCase();
       let numberOfShares = $('#investment-quantity').val();
@@ -253,7 +252,7 @@ function displayInvestments () {
 function displayCryptos () {
   let output = '';
   cryptos.map(function(crypto) {
-    output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} coins @ ${crypto['Price on Call']}${removeElementButton}</li>`;
+    output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} @ ${crypto['Price on Call']}${removeElementButton}</li>`;
   });
   $('.user-crypto-list').html(output);
 }
@@ -439,6 +438,15 @@ function removeUserEntryDebts () {
   });
 }
 
+function removeUserEntryCryptos () {
+  $('.user-crypto-list').on('click', '.remove-element-button', function(event) {
+    console.log($(this).closest('li').index());
+    $(this).closest('li').remove();
+    cryptos.splice($(this).closest('li').index(), 1);
+    //displayCryptosPerSecond();
+  });
+}
+
 $(timePageLoadedEST);
 $(timePageLoadedUTC);
 $(listenForUserIncome);
@@ -453,4 +461,5 @@ $(removeUserEntryIncome);
 $(removeUserEntryExpense);
 $(removeUserEntryInvestments);
 $(removeUserEntryDebts);
+$(removeUserEntryCryptos);
 
