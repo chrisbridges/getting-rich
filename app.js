@@ -301,10 +301,14 @@ function displayDebts () {
 function ticker () {
   let tickerValue = 0;
   function incrementTicker () {
-    tickerValue += totalIncomePerSecond() + totalCryptoPer5Minutes() - totalExpensesPerSecond() - totalDebtPerSecond() - totalDebtPaymentPerSecond();
+    tickerValue += totalIncomePerSecond() - totalExpensesPerSecond() - totalDebtPerSecond() - totalDebtPaymentPerSecond();
     $('.ticker').html(`$ ${tickerValue.toFixed(5)}`);
   }
+  function incrementTickerWithCrypto () {
+    tickerValue += totalCryptoPer5Minutes();
+  }
   setInterval(incrementTicker, 1000);
+  setInterval(incrementTickerWithCrypto, 300000);
 }
 
 function totalIncomePerSecond () {
@@ -399,13 +403,13 @@ function cryptoPer5Minutes (crypto) {
 function displayCryptoPer5Minutes () {
   let output = '';
   cryptos.map(function(crypto) {
-    output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} @ ${crypto['Price on Call']} (${(crypto['Current Price'] - crypto['Price on Call']).toFixed(5)} / ${crypto['Investment']} since)</li>`;
+    output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} @ $${crypto['Price on Call']} ($${(crypto['Current Price'] - crypto['Price on Call']).toFixed(5)} / ${crypto['Investment']} since)</li>`;
   });
   $('.crypto-list').html(output);
   $('.crypto-total').html(totalCryptoPer5Minutes().toFixed(5));
 }
 
-setInterval(updateCurrentPriceCrypto, 300000);
+setInterval(updateCurrentPriceCrypto, 200000); // reduce?
 
 function displayIncomePerSecond () {
   let output = '';
@@ -414,7 +418,7 @@ function displayIncomePerSecond () {
     output += `<li>${income['Income Type']}: $${income['Income Amount']} - ($${incomePer.toFixed(5)} / sec)</li>`;
   });
   $('.income-list').html(output);
-  $('.income-total').html(totalIncomePerSecond().toFixed(5));
+  $('.income-total').html(totalIncomePerSecond().toFixed(5) + ' / sec');
 }
 
 function displayExpensePerSecond () {
@@ -424,7 +428,7 @@ function displayExpensePerSecond () {
     output += `<li>${expense['Expense Type']}: $${expense['Expense Amount']} - ($${expensePer.toFixed(5)} / sec)</li>`;
   });
   $('.expense-list').html(output);
-  $('.expense-total').html(totalExpensesPerSecond().toFixed(5));
+  $('.expense-total').html(totalExpensesPerSecond().toFixed(5) + ' / sec');
 }
 
 function displayDebtPerSecond () {
@@ -436,7 +440,7 @@ function displayDebtPerSecond () {
       Monthly Payment: $${debt['Monthly Payment']} ($${debtPaymentPerSecond(debt['Monthly Payment']).toFixed(5)} / sec)</li>`;
   });
   $('.debt-list').html(output);
-  $('.debt-total').html((totalDebtPerSecond() + totalDebtPaymentPerSecond()).toFixed(5));
+  $('.debt-total').html((totalDebtPerSecond() + totalDebtPaymentPerSecond()).toFixed(5) + ' / sec');
 }
 
 function removeUserEntryIncome () { // remove funcs only working for income. What's that about?
@@ -480,7 +484,7 @@ function removeUserEntryCryptos () {
     console.log($(this).closest('li').index());
     $(this).closest('li').remove();
     cryptos.splice($(this).closest('li').index(), 1);
-    //displayCryptosPerSecond();
+    displayCryptoPer5Minutes();
   });
 }
 
@@ -494,8 +498,8 @@ $(ticker);
 $(displayIncomePerSecond);
 $(displayExpensePerSecond);
 $(displayDebtPerSecond);
-$(displayCryptoPer5Minutes);
-$(updateCurrentPriceCrypto);
+//$(displayCryptoPer5Minutes);
+//$(updateCurrentPriceCrypto);
 $(removeUserEntryIncome);
 $(removeUserEntryExpense);
 $(removeUserEntryInvestments);
