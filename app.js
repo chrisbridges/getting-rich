@@ -234,7 +234,8 @@ function storingCryptos (userInvestment, numberOfShares, price) {
   cryptos.push({
     'Investment': userInvestment,
     'Amount Owned': numberOfShares,
-    'Price on Call': price
+    'Price on Call': price,
+    'Current Price': price
   });
 
   console.log(cryptos);
@@ -368,14 +369,46 @@ function investmentPerMinute (investment) {
       return data['Time Series (1min)'][timePageLoadedEST()]['4. close'];
     }).error(investmentError); 
   console.log(currentPrice - investment['Price on Call']);
-  return currentPrice - investment['Price on Call'];
+  return currentPrice - investment['Price on Call']; // can i just do currentPrice[data]['Time Series (1min)'][timePageLoadedEST()]['4. close'] for the new price?
 }
+
+
+
+function updateCurrentPriceCrypto () {
+  cryptos.forEach(function (crypto) {
+    cryptoPer5Minutes(crypto);
+  });
+  displayCryptoPer5Minutes();
+}
+
+function cryptoPer5Minutes (crypto) {
+  const params = {
+    function: 'DIGITAL_CURRENCY_INTRADAY',
+    symbol: crypto['Investment'],
+    market: 'USD',
+    apikey: ALPHA_VANTAGE_API_KEY
+  };
+
+  $.getJSON(ALPHA_VANTAGE_ENDPOINT, params).done(function (data) {
+    crypto['Current Price'] = data['Time Series (Digital Currency Intraday)'][timePageLoadedUTC()]['1a. price (USD)'];
+  });
+}
+
+function displayCryptoPer5Minutes () {
+  let output = '';
+  cryptos.map(function(crypto) {
+    output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} @ ${crypto['Price on Call']} (${crypto['Current Price'] - crypto['Price on Call']} since)</li>`;
+  });
+  $('.crypto-list').html(output);
+}
+
+setInterval(updateCurrentPriceCrypto, 300000);
 
 function displayIncomePerSecond () {
   let output = '';
   let incomesPer = incomes.map(function(income) {
     let incomePer = incomePerSecond(income['Income Amount']);
-    output += `<li>${income['Income Type']}: $${incomePer.toFixed(5)}</li>`;
+    output += `<li>${income['Income Type']}: $${income['Income Amount']} - ($${incomePer.toFixed(5)} / sec)</li>`;
   });
   $('.income-list').html(output);
   $('.income-total').html(totalIncomePerSecond().toFixed(5));
@@ -385,7 +418,7 @@ function displayExpensePerSecond () {
   let output = '';
   let expensesPer = expenses.map(function(expense) {
     let expensePer = expensesPerSecond(expense['Expense Amount']);
-    output += `<li>${expense['Expense Type']}: $${expensePer.toFixed(5)}</li>`;
+    output += `<li>${expense['Expense Type']}: $${expense['Expense Amount']} - ($${expensePer.toFixed(5)} / sec)</li>`;
   });
   $('.expense-list').html(output);
   $('.expense-total').html(totalExpensesPerSecond().toFixed(5));
@@ -395,8 +428,9 @@ function displayDebtPerSecond () {
   let output = '';
   let debtsPer = debts.map(function(debt) {
     let debtPer = debtPerSecond(debt['Amount Owed'], debt['Interest Rate']);
-    output += `<li>${debt['Debt Type']} Interest: $${debtPer.toFixed(5)}<br>
-      Monthly Payment: ${debtPaymentPerSecond(debt['Monthly Payment']).toFixed(5)}</li>`;
+    output += `<li>${debt['Debt Type']} Amount: $${debt['Amount Owed']}<br>
+      ${debt['Debt Type']} Interest: ($${debtPer.toFixed(5)} / sec)<br>
+      Monthly Payment: $${debt['Monthly Payment']} ($${debtPaymentPerSecond(debt['Monthly Payment']).toFixed(5)} / sec)</li>`;
   });
   $('.debt-list').html(output);
   $('.debt-total').html((totalDebtPerSecond() + totalDebtPaymentPerSecond()).toFixed(5));
@@ -457,6 +491,8 @@ $(ticker);
 $(displayIncomePerSecond);
 $(displayExpensePerSecond);
 $(displayDebtPerSecond);
+$(displayCryptoPer5Minutes);
+$(updateCurrentPriceCrypto);
 $(removeUserEntryIncome);
 $(removeUserEntryExpense);
 $(removeUserEntryInvestments);
