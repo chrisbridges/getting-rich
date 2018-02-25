@@ -223,7 +223,8 @@ function storingInvestments (userInvestment, numberOfShares, price) {
   investments.push({
     'Investment': userInvestment,
     'Amount Owned': numberOfShares,
-    'Price on Call': price
+    'Price on Call': price,
+    'Current Price': price
   });
 
   console.log(investments);
@@ -256,6 +257,7 @@ function displayCryptos () {
     output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} @ ${crypto['Price on Call']}${removeElementButton}</li>`;
   });
   $('.user-crypto-list').html(output);
+  displayCryptoPer5Minutes();
 }
 
 function investmentError () {
@@ -299,7 +301,7 @@ function displayDebts () {
 function ticker () {
   let tickerValue = 0;
   function incrementTicker () {
-    tickerValue += totalIncomePerSecond() - totalExpensesPerSecond() - totalDebtPerSecond() - totalDebtPaymentPerSecond();
+    tickerValue += totalIncomePerSecond() + totalCryptoPer5Minutes() - totalExpensesPerSecond() - totalDebtPerSecond() - totalDebtPaymentPerSecond();
     $('.ticker').html(`$ ${tickerValue.toFixed(5)}`);
   }
   setInterval(incrementTicker, 1000);
@@ -365,14 +367,14 @@ function investmentPerMinute (investment) {
       apikey: ALPHA_VANTAGE_API_KEY
   };
 
-  let currentPrice = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params).done(function (data) {
-      return data['Time Series (1min)'][timePageLoadedEST()]['4. close'];
-    }).error(investmentError); 
-  console.log(currentPrice - investment['Price on Call']);
-  return currentPrice - investment['Price on Call']; // can i just do currentPrice[data]['Time Series (1min)'][timePageLoadedEST()]['4. close'] for the new price?
+  //copy crypto func
 }
 
-
+function totalCryptoPer5Minutes () {
+  return cryptos.reduce(function(total, crypto) {
+    return total + (crypto['Amount Owned'] * (crypto['Current Price'] - crypto['Price on Call']));
+  }, 0);
+}
 
 function updateCurrentPriceCrypto () {
   cryptos.forEach(function (crypto) {
@@ -397,9 +399,10 @@ function cryptoPer5Minutes (crypto) {
 function displayCryptoPer5Minutes () {
   let output = '';
   cryptos.map(function(crypto) {
-    output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} @ ${crypto['Price on Call']} (${crypto['Current Price'] - crypto['Price on Call']} since)</li>`;
+    output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} @ ${crypto['Price on Call']} (${(crypto['Current Price'] - crypto['Price on Call']).toFixed(5)} / ${crypto['Investment']} since)</li>`;
   });
   $('.crypto-list').html(output);
+  $('.crypto-total').html(totalCryptoPer5Minutes().toFixed(5));
 }
 
 setInterval(updateCurrentPriceCrypto, 300000);
