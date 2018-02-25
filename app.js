@@ -4,6 +4,7 @@ const ALPHA_VANTAGE_ENDPOINT = 'https://www.alphavantage.co/query';
 const incomes = [];
 const expenses = [];
 const investments = [];
+const cryptos = [];
 const debts = [];
 
 const secondsIn30Days = 2592000;
@@ -168,30 +169,54 @@ function displayExpenses () {
   expenses.map(function(expense) {
     output += `<li>${expense['Expense Type']}: $${expense['Expense Amount']}${removeElementButton}</li>`;
   });
-  $('.user-expense-values').html(output);
+  $('.user-expense-list').html(output);
   displayExpensePerSecond();
 }
 
 function listenForUserInvestments () {
   $('#investment-form').submit(function(event) {
     event.preventDefault();
-    let userInvestment = $('#investment').val().toUpperCase();
-    let numberOfShares = $('#investment-quantity').val();
-    $('#investment').val('');
-    $('#investment-quantity').val('');
 
-    const params = {
-      function: 'TIME_SERIES_INTRADAY',
-      symbol: userInvestment,
-      interval: '1min',
-      apikey: ALPHA_VANTAGE_API_KEY
-    };
+    if ($('#investment-option').val() === "Stocks") {
+      let userInvestment = $('#investment').val().toUpperCase();
+      let numberOfShares = $('#investment-quantity').val();
+      $('#investment').val('');
+      $('#investment-quantity').val('');
 
-    let sharePriceOnCall = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params).done(function (data) {
-      const price = data['Time Series (1min)'][timePageLoadedEST()]['4. close'];
-      console.log(price);
-      storingInvestments(userInvestment, numberOfShares, price);
-    }).error(investmentError); 
+      const params = {
+        function: 'TIME_SERIES_INTRADAY',
+        symbol: userInvestment,
+        interval: '1min',
+        apikey: ALPHA_VANTAGE_API_KEY
+      };
+
+      let sharePriceOnCall = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params).done(function (data) {
+        const price = data['Time Series (1min)'][timePageLoadedEST()]['4. close'];
+        console.log(price);
+        storingInvestments(userInvestment, numberOfShares, price);
+      }); 
+    }
+
+
+    if ($('#investment-option').val() === "Crypto") {
+      let userInvestment = $('#investment').val().toUpperCase();
+      let numberOfShares = $('#investment-quantity').val();
+      $('#investment').val('');
+      $('#investment-quantity').val('');
+
+      const params = {
+        function: 'DIGITAL_CURRENCY_INTRADAY',
+        symbol: userInvestment,
+        market: 'USD',
+        apikey: ALPHA_VANTAGE_API_KEY
+      };
+
+      let sharePriceOnCall = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params).done(function (data) {
+        const price = data['Time Series (Digital Currency Intraday)'][timePageLoadedUTC()]['1a. price (USD)'];
+        console.log(price);
+        storingCryptos(userInvestment, numberOfShares, price);
+      }); 
+    }
   });
 }
 
@@ -206,12 +231,31 @@ function storingInvestments (userInvestment, numberOfShares, price) {
   displayInvestments();
 }
 
+function storingCryptos (userInvestment, numberOfShares, price) {
+  cryptos.push({
+    'Investment': userInvestment,
+    'Amount Owned': numberOfShares,
+    'Price on Call': price
+  });
+
+  console.log(cryptos);
+  displayCryptos();
+}
+
 function displayInvestments () {
   let output = '';
   investments.map(function(investment) {
-    output += `<li>${investment['Investment']}: ${investment['Amount Owned']} share @ ${investment['Price on Call']}${removeElementButton}</li>`;
+    output += `<li>${investment['Investment']}: ${investment['Amount Owned']} shares @ ${investment['Price on Call']}${removeElementButton}</li>`;
   });
-  $('.user-investment-values').html(output);
+  $('.user-investment-list').html(output);
+}
+
+function displayCryptos () {
+  let output = '';
+  cryptos.map(function(crypto) {
+    output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} coins @ ${crypto['Price on Call']}${removeElementButton}</li>`;
+  });
+  $('.user-crypto-list').html(output);
 }
 
 function investmentError () {
@@ -248,7 +292,7 @@ function displayDebts () {
   debts.map(function(debt) {
     output += `<li>${debt['Debt Type']}: $${debt['Amount Owed']} @ ${debt['Interest Rate']}% interest<br>Monthly Payment: $${debt['Monthly Payment']}${removeElementButton}</li>`;
   });
-  $('.user-debt-values').html(output);
+  $('.user-debt-list').html(output);
   displayDebtPerSecond();
 }
 
@@ -382,7 +426,7 @@ function removeUserEntryInvestments () {
     console.log($(this).closest('li').index());
     $(this).closest('li').remove();
     investments.splice($(this).closest('li').index(), 1);
-    displayInvestmentPerSecond();
+    //displayInvestmentPerSecond();
   });
 }
 

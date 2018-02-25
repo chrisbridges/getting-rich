@@ -39,17 +39,20 @@
     <form id="investment-form">
       <legend>Investments &amp; Assets</legend>
       <label></label>
-      <select>
+      <select id="investment-option">
         <option value="Stocks">NYSE / NASDAQ Holding</option>
         <option value="Crypto">Cryptocurrency</option>
       </select>
       <input type="number" min="1" name="investment-quantity" id="investment-quantity" placeholder="# of shares" required>
       <span>shares of</span>
-      <input type="text" name="investment" id="investment" placeholder="AAPL, MSFT, TSLA, etc." required>
+      <input type="text" name="investment" id="investment" placeholder="AAPL, BTC, TSLA, etc." required>
       <button type="submit">Submit</button>
     </form>
     <div class="user-investment-values">
+      <h2>Stocks:</h2>
       <ul class="user-investment-list"></ul>
+      <h2>Crypto:</h2>
+      <ul class="user-crypto-list"></ul>
     </div>
     <a class="next-section-button" href="#expense-section">Next</a>
   </section>
