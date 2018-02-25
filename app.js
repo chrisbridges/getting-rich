@@ -9,7 +9,7 @@ const debts = [];
 const secondsIn30Days = 2592000;
 const removeElementButton = `<button class="remove-element-button">X</button>`;
 
-function timePageLoaded () {
+function timePageLoadedEST () {
 
   const currentDate = new Date();
   const dayOfTheWeek = currentDate.getDay();
@@ -71,12 +71,42 @@ function timePageLoaded () {
     return time;
   }
 
-  let currentTimeWithPadding = `${addPadding(hour)}:${addPadding(minute)}:${addPadding(second)}`;
+  let currentTimeWithPadding = `${addPadding(hour)}:${addPadding(minute)}:00`; // price times are always at 00 seconds
 
   areMarketsClosed();
 
   let currentDateWithPadding = `${year}-${addPadding(month)}-${addPadding(date)}`;
   let currentTimeAndDateWithPadding = `${currentDateWithPadding} ${currentTimeWithPadding}`;
+
+  console.log(currentTimeAndDateWithPadding);
+  return currentTimeAndDateWithPadding;
+}
+
+function timePageLoadedUTC () {
+  const currentDate = new Date();
+  const hour = currentDate.getUTCHours();
+  let minute = currentDate.getUTCMinutes();
+  const second = currentDate.getUTCSeconds();
+  const month = currentDate.getUTCMonth() + 1; // month values are 0-indexed
+  const date = currentDate.getUTCDate();
+  const year = currentDate.getUTCFullYear();
+
+  function addPadding (time) {
+    if (time < 10) {
+      time = '0' + time;
+    }
+    return time;
+  }
+
+  function roundMinuteToNearest5 () { // crypto prices refresh every 5 minutes
+    minute = Math.floor(minute / 5) * 5; // minute needs to be held at last 5 until next value of 5
+  }
+
+  roundMinuteToNearest5();
+
+  const currentTimeWithPadding = `${addPadding(hour)}:${addPadding(minute)}:00`; // price times are always at 00 seconds
+  const currentDateWithPadding = `${year}-${addPadding(month)}-${addPadding(date)}`;
+  const currentTimeAndDateWithPadding = `${currentDateWithPadding} ${currentTimeWithPadding}`;
 
   console.log(currentTimeAndDateWithPadding);
   return currentTimeAndDateWithPadding;
@@ -157,11 +187,11 @@ function listenForUserInvestments () {
       apikey: ALPHA_VANTAGE_API_KEY
     };
 
-    let sharePriceOnCall = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params).done(function (data) { // need to get JUST the price when this is called. So close...
-      const price = data['Time Series (1min)'][timePageLoaded()]['4. close'];
+    let sharePriceOnCall = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params).done(function (data) {
+      const price = data['Time Series (1min)'][timePageLoadedEST()]['4. close'];
       console.log(price);
       storingInvestments(userInvestment, numberOfShares, price);
-    }); 
+    }).error(investmentError); 
   });
 }
 
@@ -179,13 +209,13 @@ function storingInvestments (userInvestment, numberOfShares, price) {
 function displayInvestments () {
   let output = '';
   investments.map(function(investment) {
-    output += `<li>${investment['Investment']}: ${investment['Amount Owned']} share @ ${investment['Price on Call']} (Current Price)${removeElementButton}</li>`;
+    output += `<li>${investment['Investment']}: ${investment['Amount Owned']} share @ ${investment['Price on Call']}${removeElementButton}</li>`;
   });
   $('.user-investment-values').html(output);
 }
 
 function investmentError () {
-  console.log('Sorry. We\'re having trouble finding that investment right now.');
+  console.log('Sorry. We\'re having trouble finding that investment right now. Please try again');
 }
 
 function listenForUserDebts () {
@@ -279,12 +309,23 @@ function compoundInterestFormula (principal, interestRate, compoundRatePerYear, 
   return principal * Math.pow((1 + (interestRate / 100) / compoundRatePerYear), (compoundRatePerYear * lengthOfDebtInYears)) - principal;
 }
 
-function totalInvestmentsPerSecond () { // look up how to handle a 503 error
+function totalInvestmentPerMinute () { // max price refresh is 1 min for Alpha Vantage
 
 }
 
-function investmentsPerSecond () {
+function investmentPerMinute (investment) {
+  const params = {
+      function: 'TIME_SERIES_INTRADAY',
+      symbol: investment['Investment'],
+      interval: '1min',
+      apikey: ALPHA_VANTAGE_API_KEY
+  };
 
+  let currentPrice = $.getJSON(ALPHA_VANTAGE_ENDPOINT, params).done(function (data) {
+      return data['Time Series (1min)'][timePageLoadedEST()]['4. close'];
+    }).error(investmentError); 
+  console.log(currentPrice - investment['Price on Call']);
+  return currentPrice - investment['Price on Call'];
 }
 
 function displayIncomePerSecond () {
@@ -354,7 +395,8 @@ function removeUserEntryDebts () {
   });
 }
 
-$(timePageLoaded);
+$(timePageLoadedEST);
+$(timePageLoadedUTC);
 $(listenForUserIncome);
 $(listenForUserInvestments);
 $(listenForUserExpense);
