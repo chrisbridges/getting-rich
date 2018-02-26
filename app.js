@@ -242,7 +242,7 @@ function storingCryptos (userInvestment, numberOfShares, price) {
   console.log(cryptos);
   displayCryptos();
 }
-
+/*
 function displayInvestments () {
   let output = '';
   investments.map(function(investment) {
@@ -250,11 +250,11 @@ function displayInvestments () {
   });
   $('.user-investment-list').html(output);
 }
-
+*/
 function displayCryptos () {
   let output = '';
   cryptos.map(function(crypto) {
-    output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} @ ${crypto['Price on Call']}${removeElementButton}</li>`;
+    output += `<li>${crypto['Investment']}: ${crypto['Amount Owned']} @ $${crypto['Price on Call']}${removeElementButton}</li>`;
   });
   $('.user-crypto-list').html(output);
   displayCryptoPer5Minutes();
@@ -436,8 +436,7 @@ function displayDebtPerSecond () {
   let output = '';
   let debtsPer = debts.map(function(debt) {
     let debtPer = debtPerSecond(debt['Amount Owed'], debt['Interest Rate']);
-    output += `<li>${debt['Debt Type']} Amount: $${debt['Amount Owed']}<br>
-      ${debt['Debt Type']} Interest: ($${debtPer.toFixed(5)} / sec)<br>
+    output += `<li>${debt['Debt Type']} Interest: ($${debtPer.toFixed(5)} / sec)<br>
       Monthly Payment: $${debt['Monthly Payment']} ($${debtPaymentPerSecond(debt['Monthly Payment']).toFixed(5)} / sec)</li>`;
   });
   $('.debt-list').html(output);
