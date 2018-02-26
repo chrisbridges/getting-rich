@@ -40,8 +40,6 @@ function timePageLoadedEST () {
     }
   }
 
-  calibrateLocalTimetoEST();
-
   function areMarketsClosed () {
     const isWeekDay = dayOfTheWeek >= 1 && dayOfTheWeek <= 5;
 
@@ -75,10 +73,12 @@ function timePageLoadedEST () {
   let currentTimeWithPadding = `${addPadding(hour)}:${addPadding(minute)}:00`; // price times are always at 00 seconds
 
   areMarketsClosed();
+  calibrateLocalTimetoEST();
 
   let currentDateWithPadding = `${year}-${addPadding(month)}-${addPadding(date)}`;
   let currentTimeAndDateWithPadding = `${currentDateWithPadding} ${currentTimeWithPadding}`;
 
+  //console.log(dayOfTheWeek);
   console.log(currentTimeAndDateWithPadding);
   return currentTimeAndDateWithPadding;
 }
@@ -489,13 +489,6 @@ function removeUserEntryCryptos () {
   });
 }
 
-function scrollToNextSection () {
-  $(".next-section-button").click(function() {
-    var cls = $(this).closest(".section").next().offset().top;
-    $("html, body").animate({scrollTop: cls}, "slow");
-  });
-}
-
 $(timePageLoadedEST);
 $(timePageLoadedUTC);
 $(listenForUserIncome);
@@ -513,5 +506,4 @@ $(removeUserEntryExpense);
 $(removeUserEntryInvestments);
 $(removeUserEntryDebts);
 $(removeUserEntryCryptos);
-$(scrollToNextSection);
 

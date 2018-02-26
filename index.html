@@ -13,6 +13,9 @@
     <h1>Am I Getting Rich?</h1>
     <h2>(or nah...)</h2>
     <a href="#income-section"><button class="next-section-button">Let's find out</button></a>
+    <div class="intro">
+      <p><span>Am I Getting Rich (or nah?)</span> is an app that takes your current income, expenses, crypto investments, and debts to show you a real-time estimation of your gains (or losses) in wealth.</p>
+    </div>
   </header>
 
   <section id="income-section">
@@ -28,7 +31,7 @@
       </select>
       <span>
         <label for="income">Amount Earned Per Month:</label>
-        <input type="number" min="0" name="income" id="income" placeholder="Per-month income">
+        <input type="number" min="0" name="income" id="income" placeholder="Per-month income" required>
       </span>
       <button type="submit">Submit</button>
     </form>
@@ -102,15 +105,15 @@
       </select>
       <span>
         <label for="debt">Principal Amount:</label>
-        <input type="number" min="0" name="debt" id="debt" placeholder="Amount owed">
+        <input type="number" min="0" name="debt" id="debt" placeholder="Amount owed" required>
       </span>
       <span>
         <label for ="interest-rate">Interest Rate:</label>
-        <input type="number" min="0" name="interest-rate" id="interest-rate" placeholder="Interest rate">
+        <input type="number" min="0" name="interest-rate" id="interest-rate" placeholder="Interest rate" required>
       </span>
       <span>
         <label for ="monthly-payment">I make monthly payments on this debt of:</label>
-        <input type="number" min="0" name="monthly-payment" id="monthly-payment" placeholder="Monthly Payment">
+        <input type="number" min="0" name="monthly-payment" id="monthly-payment" placeholder="Monthly Payment" required>
       </span>
       <button type="submit">Submit</button>
     </form>
@@ -130,10 +133,12 @@
         <div class="expense-result">Expenses:<ul class="expense-list"></ul><div class="total">Total: $ <span class="expense-total">0</span></div></div>
         <div class="debt-result">Debts:<ul class="debt-list"></ul><div class="total">Total: $ <span class="debt-total">0</span></div></div>
       </div>
-      <div class="disclaimer"></div>
     </section>
   </main>
 
+  <footer>
+    <p>This app is merely for educational purposes and no financial decisions should be made based upon the information provided here. Please refer to a certified financial fiduciary for any financial guidance.</p>
+  </footer>
   <script
     src="http://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="

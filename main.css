@@ -12,18 +12,6 @@ body {
   color: white;
 }
 
-/*body::after {
-  content: "";
-  background: black;
-  opacity: 0.6;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  position: absolute;
-  z-index: -1;
-}*/
-
 *:focus {
   outline-color: orange;
 }
@@ -33,7 +21,7 @@ header {
 }
 
 header h1 {
-  font-size: 45px;
+  font-size: 40px;
 }
 
 header h2 { /* fade-in */
@@ -80,6 +68,15 @@ header, section {
   height: 100vh;
 }
 
+header p {
+  margin-top: 40px;
+  padding: 10px;
+}
+
+header p span {
+  text-decoration: underline;
+}
+
 .next-section-button {
   font-size: 20px;
   padding: 10px 30px;
@@ -89,14 +86,14 @@ header, section {
 }
 
 select, input {
-  padding: 10px;
-  font-size: 20px;
+  padding: 5px;
+  font-size: 14px;
   margin: 20px;
 }
 
 li {
   list-style-position: inside;
-  font-size: 20px;
+  font-size: 14px;
 }
 
 li button {
@@ -111,7 +108,7 @@ button[type="submit"] {
 
 legend {
   text-align: center;
-  font-size: 40px;
+  font-size: 30px;
   margin-bottom: 40px;
   text-decoration: underline;
 }
@@ -135,7 +132,7 @@ section {
 }
 
 .results {
-  font-size: 28px;
+  font-size: 24px;
 }
 
 .total {
@@ -144,8 +141,15 @@ section {
 }
 
 .ticker {
-  font-size: 40px;
+  font-size: 30px;
+  margin-top: 40px;
   margin-bottom: 40px;
+}
+
+footer {
+  font-size: 12px;
+  font-style: italic;
+  text-align: center;
 }
 
 @media only screen and (min-width: 640px) {
