@@ -5,13 +5,14 @@
   <meta name="description" content="App for tracking real-time wealth accumulation">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Am I Getting Rich - or nah?</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
   <header>
     <h1>Am I Getting Rich?</h1>
     <h2>(or nah...)</h2>
-    <a class="next-section-button" href="#income-section">Let's find out</a>
+    <a href="#income-section"><button class="next-section-button">Let's find out</button></a>
   </header>
 
   <section id="income-section">
@@ -24,15 +25,17 @@
         <option value="Pension">Pension</option>
         <option value="Social Security">Social Security</option>
         <option value="Other">Other</option>
-        <label for="income"></label>
-        <input type="number" min="0" name="income" id="income" placeholder="Per-month income">
       </select>
+      <span>
+        <label for="income">Amount Earned Per Month:</label>
+        <input type="number" min="0" name="income" id="income" placeholder="Per-month income">
+      </span>
       <button type="submit">Submit</button>
     </form>
     <div class="user-income-values">
       <ul class="user-income-list"></ul>
     </div>
-    <a href="#investment-section"><button class="income-next-section-button">Next</button></a>
+    <a href="#investment-section"><button class="next-section-button">Next</button></a>
   </section>
 
   <section id="investment-section">
@@ -43,18 +46,23 @@
         <option value="Stocks">NYSE / NASDAQ Holding</option>
         <option value="Crypto">Cryptocurrency</option>
       </select>
-      <input type="number" min="1" name="investment-quantity" id="investment-quantity" placeholder="# of shares" required>
-      <span>shares of</span>
-      <input type="text" name="investment" id="investment" placeholder="AAPL, BTC, TSLA, etc." required>
+      <span>
+        <label for="investment-quantity">Number of Shares:</label>
+        <input type="number" min="1" name="investment-quantity" id="investment-quantity" placeholder="# of shares" required>
+      </span>
+      <span>
+        <label for="investment">Ticker Symbol:</label>
+        <input type="text" name="investment" id="investment" placeholder="AAPL, BTC, TSLA, etc." required>
+      </span>
       <button type="submit">Submit</button>
     </form>
     <div class="user-investment-values">
-      <h2>Stocks:</h2>
+      <!-- <h2>Stocks:</h2> -->
       <ul class="user-investment-list"></ul>
-      <h2>Crypto:</h2>
+      <!-- <h2>Crypto:</h2> -->
       <ul class="user-crypto-list"></ul>
     </div>
-    <a class="next-section-button" href="#expense-section">Next</a>
+    <a href="#expense-section"><button class="next-section-button">Next</button></a>
   </section>
 
   <section id="expense-section">
@@ -68,15 +76,17 @@
         <option value="Cell Phone">Cell Phone</option>
         <option value="Groceries &amp; Food">Groceries &amp; Food</option>
         <option value="Miscellaneous Expense">Miscellaneous Expense</option>
-        <label for="expense"></label>
-        <input type="number" min="0" name="expense" id="expense" placeholder="Expense per month" required>
       </select>
+      <span>
+        <label for="expense">Expense Per Month:</label>
+        <input type="number" min="0" name="expense" id="expense" placeholder="Expense per month" required>
+      </span>
       <button type="submit">Submit</button>
     </form>
     <div class="user-expense-values">
       <ul class="user-expense-list"></ul>
     </div>
-    <a class="next-section-button" href="#debt-section">Next</a>
+    <a href="#debt-section"><button class="next-section-button">Next</button></a>
   </section>
 
   <section id="debt-section">
@@ -89,29 +99,37 @@
         <option value="Student Loans">Student Loans</option>
         <option value="Credit Card Payments">Credit Card Payments</option>
         <option value="Miscellaneous Debt">Miscellaneous Debt</option>
-        <label for="debt"></label>
-        <input type="number" min="0" name="debt" id="debt" placeholder="Amount owed">
-        <span> @ </span>
-        <input type="number" min="0" name="interest-rate" id="interest-rate" placeholder="Interest rate">
-        <label for ="monthly-payment">I make monthly payments on this debt of:</label>
-        <input type="number" min="0" name="monthly-payment" id="monthly-payment" placeholder="Amount Paid / month">
       </select>
+      <span>
+        <label for="debt">Principal Amount:</label>
+        <input type="number" min="0" name="debt" id="debt" placeholder="Amount owed">
+      </span>
+      <span>
+        <label for ="interest-rate">Interest Rate:</label>
+        <input type="number" min="0" name="interest-rate" id="interest-rate" placeholder="Interest rate">
+      </span>
+      <span>
+        <label for ="monthly-payment">I make monthly payments on this debt of:</label>
+        <input type="number" min="0" name="monthly-payment" id="monthly-payment" placeholder="Monthly Payment">
+      </span>
       <button type="submit">Submit</button>
     </form>
     <div class="user-debt-values">
       <ul class="user-debt-list"></ul>
     </div>
-    <a href="#result-section"><button class="debt-next-section-button">Next</button></a>
+    <a href="#result-section"><button class="next-section-button">Next</button></a>
   </section>
 
   <main role="main">
     <section id="result-section">
-      <div class="income-result">Incomes:<ul class="income-list"></ul><div>Total: $ <span class="income-total">0</span></div></div>
-      <div class="investment-result">Investments:<ul class="investment-list"></ul><div>Total: $ <span class="investment-total">0</span></div></div>
-      <div class="crypto-result">Crypto:<ul class="crypto-list"></ul><div>Total: $ <span class="crypto-total">0</span></div></div>
-      <div class="expense-result">Expenses:<ul class="expense-list"></ul><div>Total: $ <span class="expense-total">0</span></div></div>
-      <div class="debt-result">Debts:<ul class="debt-list"></ul><div>Total: $ <span class="debt-total">0</span></div></div>
       <div class="ticker"></div>
+      <div class="results">
+        <div class="income-result">Incomes:<ul class="income-list"></ul><div class="total">Total: $ <span class="income-total">0</span></div></div>
+        <div class="investment-result">Investments:<ul class="investment-list"></ul><div class="total">Total: $ <span class="investment-total">0</span></div></div>
+        <div class="crypto-result">Crypto:<ul class="crypto-list"></ul><div class="total">Total: $ <span class="crypto-total">0</span></div></div>
+        <div class="expense-result">Expenses:<ul class="expense-list"></ul><div class="total">Total: $ <span class="expense-total">0</span></div></div>
+        <div class="debt-result">Debts:<ul class="debt-list"></ul><div class="total">Total: $ <span class="debt-total">0</span></div></div>
+      </div>
       <div class="disclaimer"></div>
     </section>
   </main>

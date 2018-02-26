@@ -304,8 +304,9 @@ function ticker () {
     tickerValue += totalIncomePerSecond() - totalExpensesPerSecond() - totalDebtPerSecond() - totalDebtPaymentPerSecond();
     $('.ticker').html(`$ ${tickerValue.toFixed(5)}`);
   }
-  function incrementTickerWithCrypto () {
-    tickerValue += totalCryptoPer5Minutes();
+  function incrementTickerWithCrypto () { // ticker is getting increased by every new total for crypto, need to overwrite old value and substitute
+    let cryptoChange = totalCryptoPer5Minutes();;
+    tickerValue += cryptoChange;
   }
   setInterval(incrementTicker, 1000);
   setInterval(incrementTickerWithCrypto, 300000);
@@ -409,7 +410,7 @@ function displayCryptoPer5Minutes () {
   $('.crypto-total').html(totalCryptoPer5Minutes().toFixed(5));
 }
 
-setInterval(updateCurrentPriceCrypto, 200000); // reduce?
+setInterval(updateCurrentPriceCrypto, 300000); // reduce?
 
 function displayIncomePerSecond () {
   let output = '';
@@ -488,6 +489,13 @@ function removeUserEntryCryptos () {
   });
 }
 
+function scrollToNextSection () {
+  $(".next-section-button").click(function() {
+    var cls = $(this).closest(".section").next().offset().top;
+    $("html, body").animate({scrollTop: cls}, "slow");
+  });
+}
+
 $(timePageLoadedEST);
 $(timePageLoadedUTC);
 $(listenForUserIncome);
@@ -505,4 +513,5 @@ $(removeUserEntryExpense);
 $(removeUserEntryInvestments);
 $(removeUserEntryDebts);
 $(removeUserEntryCryptos);
+$(scrollToNextSection);
 
