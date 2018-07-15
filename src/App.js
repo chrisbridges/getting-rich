@@ -3,9 +3,9 @@ import './App.css';
 import Intro from './components/Intro';
 import userInfoForm from './components/UserInfoForm';
 
-const UserIncomeForm = userInfoForm('income');
-const UserExpenseForm = userInfoForm('expense');
-const UserDebtForm = userInfoForm('debt');
+// const UserIncomeForm = userInfoForm('income');
+// const UserExpenseForm = userInfoForm('expense');
+// const UserDebtForm = userInfoForm('debt');
 
 
 class App extends Component {
@@ -14,7 +14,7 @@ class App extends Component {
     return (
       <div className="App">
         <Intro />
-        {UserIncomeForm}
+        
       </div>
     );
   }
