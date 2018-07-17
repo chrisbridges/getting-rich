@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import Intro from './components/Intro';
-import userInfoForm from './components/UserInfoForm';
+import UserInfoForm from './components/UserInfoForm';
+import Income from './components/Income';
 
-// const UserIncomeForm = userInfoForm('income');
-// const UserExpenseForm = userInfoForm('expense');
-// const UserDebtForm = userInfoForm('debt');
+const IncomeHOC = UserInfoForm(Income, 'income');
 
 
 class App extends Component {
@@ -14,7 +13,7 @@ class App extends Component {
     return (
       <div className="App">
         <Intro />
-        
+        {IncomeHOC}
       </div>
     );
   }

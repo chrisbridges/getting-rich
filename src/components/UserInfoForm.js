@@ -26,24 +26,24 @@ import React from 'react';
 
 // props to be passed to HOC - name (income, etc), options (salary, rent, etc), 
 
-const userInfoForm = (WrappedComponent, formType) => {
+function UserInfoForm (WrappedComponent, formType) {
 
   const forms = {
-    income: {title: '', options: '', interest: false},
+    income: {title: 'Income', options: '', interest: false},
     expense: {title: '', options: '', interest: false},
     debt: {title: '', options: '', interest: true}
   };
 
   const {title, options, interest} = forms[formType];
 
-  class HOC extends React.Component {
+  return class extends React.Component {
     render () {
       return (
-        <WrappedComponent title={title} options={options} interest={interest} {...this.props}/>
+        <WrappedComponent title={title} options={options} interest={interest} {...this.props} />
       );
     }
   }
-  return HOC;
+  // return HOC;
 };
 
-export default userInfoForm;
+export default UserInfoForm;
