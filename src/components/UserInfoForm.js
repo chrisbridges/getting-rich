@@ -1,5 +1,3 @@
-import React from 'react';
-
 // const UserInfoForm = (formType) => {
 //   // have vars for the multiple form options
 //   const forms = {
@@ -25,25 +23,25 @@ import React from 'react';
   // forms will have same addInput and removeInput behavior
 
 // props to be passed to HOC - name (income, etc), options (salary, rent, etc), 
+import React from 'react';
+
+const forms = {
+  income: {title: 'Income', options: ['Salary', 'Side Hustle'], interest: false},
+  expense: {title: 'Expense', options: ['Rent', 'Groceries'], interest: false},
+  debt: {title: 'Debt', options: ['Student Loan', 'Credit Card'], interest: true}
+};
+
+// const {title, options, interest} = forms[formType];
 
 function UserInfoForm (WrappedComponent, formType) {
-
-  const forms = {
-    income: {title: 'Income', options: '', interest: false},
-    expense: {title: '', options: '', interest: false},
-    debt: {title: '', options: '', interest: true}
-  };
-
-  const {title, options, interest} = forms[formType];
 
   return class extends React.Component {
     render () {
       return (
-        <WrappedComponent title={title} options={options} interest={interest} {...this.props} />
+        <WrappedComponent {...forms[formType]} {...this.props} />
       );
     }
   }
-  // return HOC;
 };
 
 export default UserInfoForm;

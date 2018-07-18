@@ -13,7 +13,7 @@ class App extends Component {
     return (
       <div className="App">
         <Intro />
-        {IncomeHOC}
+        <IncomeHOC />
       </div>
     );
   }
